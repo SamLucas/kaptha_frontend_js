@@ -117,7 +117,7 @@ export default function Dashboard() {
       ) : (
         <section>
           {dataSearch.length > 0 && (
-            <h1>
+            <h1 class={"registerFind"}>
               {totalregister === 1
                 ? `${totalregister} registro encontrado.`
                 : totalregister < 1
@@ -159,7 +159,9 @@ export default function Dashboard() {
               </div>
             ))}
 
-          {dataSearch.length > 0 && handlePaginate()}
+          <div className={"containerPaginate"}>
+            {dataSearch.length > 0 && handlePaginate()}
+          </div>
         </section>
       )}
     </Container>

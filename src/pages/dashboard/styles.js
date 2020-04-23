@@ -46,6 +46,10 @@ export const Container = styled.div`
   section {
     padding: 20px;
 
+    h1.registerFind {
+      margin: 25px 0px;
+    }
+
     .paginateItem {
       padding: 15px 20px;
       border-width: 0px;
@@ -63,6 +67,11 @@ export const Container = styled.div`
       border-radius: 50%;
       box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
       margin: 0px 5px;
+    }
+
+    div.containerPaginate {
+      margin: 10px 0px;
+      background-color: transparent;
     }
 
     div {
