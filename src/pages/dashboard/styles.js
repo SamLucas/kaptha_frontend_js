@@ -29,6 +29,20 @@ export const Container = styled.div`
     }
   }
 
+  section.loading {
+    margin: 100px 0;
+    width: 100%;
+
+    .spinner {
+      background-color: transparent;
+      margin: 0px auto;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
   section {
     padding: 20px;
 
