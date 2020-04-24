@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { Collapse } from "react-collapse";
 import { Container } from "./styles";
 
 import ReactLoading from "react-loading";
 
+import { GrSearch } from "react-icons/gr";
+import Searching from "../../assets/svg/searching.svg";
 import api from "../../config/api";
 
 export default function Dashboard() {
-  const [dataSearch, setDataSearch] = useState([]);
-  const [cancer, setCancer] = useState("Acquired Immunodeficiency Syndrome");
-  const [chemicals, setChemicals] = useState("");
+  const [dataResponse, setDataResponse] = useState([]);
+  const [dataSearch, setDataSearch] = useState(
+    "Acquired Immunodeficiency Syndrome"
+  );
 
   const [colapseStatus, setColapseStatus] = useState(-1);
 
@@ -20,19 +23,20 @@ export default function Dashboard() {
   const [totalregister, setTotalRegister] = useState(0);
   const [indexPage, setIndexPage] = useState(1);
 
-  const searchAPI = (page = null) => {
+  const searchAPI = (numberPage = 1) => {
     setLoading(true);
+
     api
       .get("/search", {
         params: {
-          cancer,
-          chemicals,
+          dataSearch,
           limit,
-          page,
+          page: typeof numberPage === "number" ? numberPage : 1,
         },
       })
       .then((res) => {
         const response = res.data;
+
         setLoading(false);
 
         if (totalregister !== response.pages) {
@@ -42,7 +46,7 @@ export default function Dashboard() {
           setTotalRegister(response.pages);
         }
 
-        setDataSearch(response.articles);
+        setDataResponse(response.articles);
       })
       .catch((error) => {
         throw error;
@@ -63,6 +67,35 @@ export default function Dashboard() {
 
   const handlePaginate = () => {
     const number = [];
+
+    number.push(
+      <button
+        type="button"
+        className={"paginateItemAtivo"}
+        onClick={() => {
+          searchAPI(1);
+          setIndexPage(1);
+        }}
+      >
+        {`<<`}
+      </button>
+    );
+
+    number.push(
+      <button
+        type="button"
+        className={"paginateItemAtivo"}
+        onClick={() => {
+          if (indexPage - 1 >= 1) {
+            searchAPI(indexPage - 1);
+            setIndexPage(indexPage - 1);
+          }
+        }}
+      >
+        {`<`}
+      </button>
+    );
+
     for (let k = 1; k <= totalPage; k += 1) {
       number.push(
         <button
@@ -78,6 +111,33 @@ export default function Dashboard() {
         </button>
       );
     }
+
+    number.push(
+      <button
+        type="button"
+        className={"paginateItemAtivo"}
+        onClick={() => {
+          if (indexPage + 1 <= totalPage) {
+            searchAPI(indexPage + 1);
+            setIndexPage(indexPage + 1);
+          }
+        }}
+      >
+        {`>`}
+      </button>
+    );
+    number.push(
+      <button
+        type="button"
+        className={"paginateItemAtivo"}
+        onClick={() => {
+          searchAPI(totalPage);
+          setIndexPage(totalPage);
+        }}
+      >
+        {`>>`}
+      </button>
+    );
     return number;
   };
 
@@ -88,16 +148,11 @@ export default function Dashboard() {
         <div>
           <input
             type="text"
-            value={cancer}
-            onChange={(e) => setCancer(e.target.value)}
-          />
-          <input
-            type="text"
-            value={chemicals}
-            onChange={(e) => setChemicals(e.target.value)}
+            value={dataSearch}
+            onChange={(e) => setDataSearch(e.target.value)}
           />
           <button type="button" onClick={searchAPI}>
-            Pesquisar
+            <GrSearch className={"buttonSearch"} color="#FFF" />
           </button>
         </div>
       </header>
@@ -110,58 +165,65 @@ export default function Dashboard() {
             color="#000"
             width="200px"
             height="200px"
-            delay="0"
           />
-          <p center>Carregando...</p>
+          <p>Carregando...</p>
         </section>
-      ) : (
+      ) : dataResponse.length > 0 ? (
         <section>
-          {dataSearch.length > 0 && (
-            <h1 class={"registerFind"}>
+          <div className="classInformation">
+            <h1 className={"registerFind"}>
               {totalregister === 1
                 ? `${totalregister} registro encontrado.`
                 : totalregister < 1
                 ? "Nenhum registro encontrado."
                 : `${totalregister} registros encontrados.`}
             </h1>
-          )}
+            <p>Termos pesquisados: {dataSearch}</p>
+          </div>
 
-          {dataSearch.length > 0 &&
-            dataSearch.map((ele, index) => (
-              <div key={JSON.stringify(index)}>
-                <h1>{ele.title_article}</h1>
-                {colapseStatus === index ? (
-                  <Collapse isOpened={colapseStatus === index}>
-                    <p
-                      id="colapseTrue"
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={{
-                        __html: handleFindPhrase(
-                          ele.abstract_article,
-                          ele.ruleAssociationsExtracted
-                        ),
-                      }}
-                    />
-                  </Collapse>
-                ) : (
-                  <p id="colapseFalse">{ele.abstract_article}</p>
-                )}
+          {dataResponse.map((ele, index) => (
+            <div key={JSON.stringify(index)} className="cardContainer">
+              <h1>{ele.title_article}</h1>
+              {colapseStatus === index ? (
+                <Collapse isOpened={colapseStatus === index}>
+                  <p
+                    id="colapseTrue"
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{
+                      __html: handleFindPhrase(
+                        ele.abstract_article,
+                        ele.ruleAssociationsExtracted
+                      ),
+                    }}
+                  />
+                </Collapse>
+              ) : (
+                <p id="colapseFalse">{ele.abstract_article}</p>
+              )}
 
-                <button
-                  id="button"
-                  type="button"
-                  onClick={() =>
-                    setColapseStatus((state) => (state === index ? -1 : index))
-                  }
-                >
-                  {!colapseStatus ? "Mais detalhes..." : "Menos detalhes..."}
-                </button>
-              </div>
-            ))}
+              <button
+                id="button"
+                type="button"
+                onClick={() =>
+                  setColapseStatus((state) => (state === index ? -1 : index))
+                }
+              >
+                {!colapseStatus ? "Mais detalhes..." : "Menos detalhes..."}
+              </button>
+            </div>
+          ))}
 
           <div className={"containerPaginate"}>
-            {dataSearch.length > 0 && handlePaginate()}
+            {dataResponse.length > 0 && handlePaginate()}
           </div>
+        </section>
+      ) : (
+        <section className="containerInformationSearch">
+          <img className="img" src={Searching} alt="" />
+          <p>
+            Digite os termos separados por virgula para realizar a busca em
+            nossa base de dados.
+          </p>
         </section>
       )}
     </Container>

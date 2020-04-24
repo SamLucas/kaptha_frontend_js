@@ -3,34 +3,50 @@ import styled from "styled-components";
 export const Container = styled.div`
   header {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
     background-color: white;
 
     h1 {
-      margin: 10px 0px;
+      margin: 20px 0px;
+      font-size: 50px;
+      text-align: center;
     }
 
-    input {
-      background-color: rgba(0, 0, 0, 0.04);
-      padding: 8px;
-      border-radius: 5px;
-      border: 2px;
-      box-shadow: 1px 2px solid rgba(0, 0, 0, 0.2);
-      margin-right: 10px;
-      width: 30%;
+    div {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      margin-bottom: -40px;
+
+      input {
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        border: 2px;
+        margin-right: 10px;
+        width: 40%;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+      }
     }
 
     button {
-      color: white;
-      padding: 8px 15px;
-      background-color: black;
-      border-radius: 5px;
       border: 0;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 5px;
       cursor: pointer;
+      color: green;
+      font-weight: bold;
+      box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+
+      .buttonSearch {
+      }
     }
   }
 
   section.loading {
-    margin: 100px 0;
+    margin: 200px 0;
     width: 100%;
 
     .spinner {
@@ -39,6 +55,7 @@ export const Container = styled.div`
     }
 
     p {
+      margin-top: 50px;
       text-align: center;
     }
   }
@@ -46,35 +63,43 @@ export const Container = styled.div`
   section {
     padding: 20px;
 
-    h1.registerFind {
-      margin: 25px 0px;
-    }
+    div.classInformation {
+      margin: 25px 0px 15px;
 
-    .paginateItem {
-      padding: 15px 20px;
-      border-width: 0px;
-      background-color: white;
-      border-radius: 50%;
-      box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
-      margin: 0px 5px;
-    }
-
-    .paginateItemAtivo {
-      padding: 15px 20px;
-      border-width: 0px;
-      background-color: black;
-      color: white;
-      border-radius: 50%;
-      box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
-      margin: 0px 5px;
+      h1.registerFind {
+        margin-bottom: 5px;
+      }
     }
 
     div.containerPaginate {
-      margin: 10px 0px;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0px 10px;
       background-color: transparent;
+
+      .paginateItem {
+        padding: 15px 20px;
+        border-width: 0px;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
+        margin: 0px 5px;
+        cursor: pointer;
+      }
+
+      .paginateItemAtivo {
+        padding: 15px 20px;
+        border-width: 0px;
+        background-color: black;
+        color: white;
+        border-radius: 50%;
+        box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
+        margin: 0px 5px;
+        cursor: pointer;
+      }
     }
 
-    div {
+    div.cardContainer {
       padding: 20px;
       background-color: white;
       border-radius: 5px;
@@ -96,6 +121,7 @@ export const Container = styled.div`
 
       p#colapseTrue {
         padding: -20px;
+        line-height: 24px;
       }
 
       p#colapseFalse {
@@ -104,11 +130,12 @@ export const Container = styled.div`
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
+        line-height: 24px;
       }
 
       #button {
         font-weight: bold;
-        padding: 15px 0px;
+        padding: 15px 0px 5px;
         border: 0px;
         background-color: white;
         cursor: pointer;
@@ -119,8 +146,26 @@ export const Container = styled.div`
         font-weight: bold;
         color: black;
         float: right;
+        padding: 15px 0px 5px;
         padding: 20px;
       }
+    }
+  }
+
+  section.containerInformationSearch {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+
+    img {
+      margin: 85px 0px;
+      width: 40vw;
+      height: 40vh;
+    }
+
+    p {
+      text-align: center;
     }
   }
 
