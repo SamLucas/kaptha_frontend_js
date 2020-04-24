@@ -5,14 +5,13 @@ import { Container } from "./styles";
 import ReactLoading from "react-loading";
 
 import { GrSearch } from "react-icons/gr";
+import Pagination from "react-js-pagination";
 import Searching from "../../assets/svg/searching.svg";
 import api from "../../config/api";
 
 export default function Dashboard() {
   const [dataResponse, setDataResponse] = useState([]);
-  const [dataSearch, setDataSearch] = useState(
-    "Acquired Immunodeficiency Syndrome"
-  );
+  const [dataSearch, setDataSearch] = useState("");
 
   const [colapseStatus, setColapseStatus] = useState(-1);
 
@@ -65,82 +64,6 @@ export default function Dashboard() {
     return text;
   };
 
-  const handlePaginate = () => {
-    const number = [];
-
-    number.push(
-      <button
-        type="button"
-        className={"paginateItemAtivo"}
-        onClick={() => {
-          searchAPI(1);
-          setIndexPage(1);
-        }}
-      >
-        {`<<`}
-      </button>
-    );
-
-    number.push(
-      <button
-        type="button"
-        className={"paginateItemAtivo"}
-        onClick={() => {
-          if (indexPage - 1 >= 1) {
-            searchAPI(indexPage - 1);
-            setIndexPage(indexPage - 1);
-          }
-        }}
-      >
-        {`<`}
-      </button>
-    );
-
-    for (let k = 1; k <= totalPage; k += 1) {
-      number.push(
-        <button
-          key={k}
-          type="button"
-          className={!(k === indexPage) ? "paginateItem" : "paginateItemAtivo"}
-          onClick={() => {
-            searchAPI(k);
-            setIndexPage(k);
-          }}
-        >
-          {k}
-        </button>
-      );
-    }
-
-    number.push(
-      <button
-        type="button"
-        className={"paginateItemAtivo"}
-        onClick={() => {
-          if (indexPage + 1 <= totalPage) {
-            searchAPI(indexPage + 1);
-            setIndexPage(indexPage + 1);
-          }
-        }}
-      >
-        {`>`}
-      </button>
-    );
-    number.push(
-      <button
-        type="button"
-        className={"paginateItemAtivo"}
-        onClick={() => {
-          searchAPI(totalPage);
-          setIndexPage(totalPage);
-        }}
-      >
-        {`>>`}
-      </button>
-    );
-    return number;
-  };
-
   return (
     <Container>
       <header>
@@ -149,6 +72,7 @@ export default function Dashboard() {
           <input
             type="text"
             value={dataSearch}
+            placeholder={"Enter terms separated by commas."}
             onChange={(e) => setDataSearch(e.target.value)}
           />
           <button type="button" onClick={searchAPI}>
@@ -173,10 +97,10 @@ export default function Dashboard() {
           <div className="classInformation">
             <h1 className={"registerFind"}>
               {totalregister === 1
-                ? `${totalregister} registro encontrado.`
+                ? `${totalregister} record found.`
                 : totalregister < 1
-                ? "Nenhum registro encontrado."
-                : `${totalregister} registros encontrados.`}
+                ? "No record found."
+                : `${totalregister} records found.`}
             </h1>
             <p>Termos pesquisados: {dataSearch}</p>
           </div>
@@ -213,17 +137,31 @@ export default function Dashboard() {
             </div>
           ))}
 
-          <div className={"containerPaginate"}>
-            {dataResponse.length > 0 && handlePaginate()}
-          </div>
+          <Pagination
+            activePage={indexPage}
+            itemsCountPerPage={4}
+            totalItemsCount={totalregister}
+            pageRangeDisplayed={5}
+            innerClass={"containerPaginate"}
+            itemClass={"paginateItem"}
+            activeClass={"paginateItemAtivo"}
+            itemClassFirst={"paginateItemAtivo"}
+            itemClassPrev={"paginateItemAtivo"}
+            itemClassNext={"paginateItemAtivo"}
+            itemClassLast={"paginateItemAtivo"}
+            onChange={(k) => {
+              searchAPI(k);
+              setIndexPage(k);
+            }}
+          />
         </section>
       ) : (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />
-          <p>
+          {/* <p>
             Digite os termos separados por virgula para realizar a busca em
             nossa base de dados.
-          </p>
+          </p> */}
         </section>
       )}
     </Container>

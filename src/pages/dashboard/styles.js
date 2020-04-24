@@ -21,7 +21,7 @@ export const Container = styled.div`
 
       input {
         background-color: white;
-        padding: 10px;
+        padding: 20px;
         border-radius: 5px;
         border: 2px;
         margin-right: 10px;
@@ -33,7 +33,7 @@ export const Container = styled.div`
     button {
       border: 0;
       background: white;
-      padding: 10px 15px;
+      padding: 10px 20px;
       border-radius: 5px;
       cursor: pointer;
       color: green;
@@ -71,13 +71,14 @@ export const Container = styled.div`
       }
     }
 
-    div.containerPaginate {
+    ul.containerPaginate {
       display: flex;
       justify-content: center;
       margin: 20px 0px 10px;
-      background-color: transparent;
+      /* background-color: red; */
+      list-style: none;
 
-      .paginateItem {
+      li.paginateItem {
         padding: 15px 20px;
         border-width: 0px;
         background-color: white;
@@ -85,18 +86,31 @@ export const Container = styled.div`
         box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
         margin: 0px 5px;
         cursor: pointer;
+
+        a {
+          text-decoration: none;
+          color: black;
+        }
       }
 
-      .paginateItemAtivo {
+      li.paginateItemAtivo {
+        text-decoration: none;
         padding: 15px 20px;
         border-width: 0px;
         background-color: black;
-        color: white;
         border-radius: 50%;
         box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
         margin: 0px 5px;
         cursor: pointer;
+
+        a {
+          text-decoration: none;
+          color: white;
+        }
       }
+      /* li .paginateItemAtivo a {
+        text-decoration: none;
+      } */
     }
 
     div.cardContainer {
@@ -159,7 +173,7 @@ export const Container = styled.div`
     flex-direction: column;
 
     img {
-      margin: 85px 0px;
+      margin: 150px 0px 0px;
       width: 40vw;
       height: 40vh;
     }
