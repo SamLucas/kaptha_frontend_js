@@ -17,12 +17,12 @@ export const handleFindPhrase = (text, frase) => {
   frase.forEach((element) => {
     const { start_pos, end_pos, association_type } = element;
     const phare = text.substr(start_pos, end_pos);
+    const colorPhare = ColorAssociation[association_type].color;
 
-    console.log(element);
     text = text
       .split(phare)
       .join(
-        `<span style="font-weight:bold;color:${ColorAssociation[association_type].color}">${phare}</span>`
+        `<span style="font-weight:bold;text-decoration: underline ${colorPhare};color:${colorPhare}">${phare}</span>`
       );
   });
 

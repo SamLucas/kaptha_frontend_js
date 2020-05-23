@@ -9,9 +9,10 @@ import { searchApi, handleFindPhrase, getTypesAssociation } from "./functions";
 import { ColorAssociation, Result } from "./moocks";
 
 import Loading from "./components/loading";
+import TagAssociation from "./components/tagAssociation";
 
 export default function Dashboard() {
-  const [dataResponse, setDataResponse] = useState(Result);
+  const [dataResponse, setDataResponse] = useState([]);
   const [dataSearch, setDataSearch] = useState("Curcumin");
 
   const [colapseStatus, setColapseStatus] = useState(-1);
@@ -82,7 +83,6 @@ export default function Dashboard() {
                 <Collapse isOpened={colapseStatus === index}>
                   <p
                     id="colapseTrue"
-                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
                       __html: handleFindPhrase(
                         ele.abstract_article,
@@ -90,16 +90,8 @@ export default function Dashboard() {
                       ),
                     }}
                   />
-                  <div className="DescriptionTypesAssociations">
-                    {getTypesAssociation(ele.ruleAssociationsExtracted).map(
-                      (ele, index) => (
-                        <div key={index} className="contentTypeAssociation">
-                          <span className="colorTypeAssociations" />
-                          <p>{ele.description}</p>
-                        </div>
-                      )
-                    )}
-                  </div>
+
+                  {TagAssociation(ele.ruleAssociationsExtracted)}
                 </Collapse>
               ) : (
                 <p id="colapseFalse">{ele.abstract_article}</p>

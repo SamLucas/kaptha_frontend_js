@@ -3,7 +3,7 @@ import ReactLoading from "react-loading";
 
 import styled from "styled-components";
 
-const Continer = styled.div`
+const Container = styled.section`
   section.loading {
     margin: 200px 0;
     width: 100%;
@@ -22,7 +22,7 @@ const Continer = styled.div`
 
 function Loading() {
   return (
-    <Continer>
+    <Container>
       <section className={"loading"}>
         <ReactLoading
           className={"spinner"}
@@ -33,7 +33,7 @@ function Loading() {
         />
         <p>Carregando...</p>
       </section>
-    </Continer>
+    </Container>
   );
 }
 
