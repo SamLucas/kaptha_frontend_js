@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Collapse } from "react-collapse";
 import { Container } from "./styles";
 
-import ReactLoading from "react-loading";
-
 import { GrSearch } from "react-icons/gr";
 import Pagination from "react-js-pagination";
 import Searching from "../../assets/svg/searching.svg";
 import { searchApi, handleFindPhrase, getTypesAssociation } from "./functions";
 import { ColorAssociation, Result } from "./moocks";
+
+import Loading from "./components/loading";
 
 export default function Dashboard() {
   const [dataResponse, setDataResponse] = useState(Result);
@@ -61,16 +61,7 @@ export default function Dashboard() {
       </header>
 
       {loading ? (
-        <section className={"loading"}>
-          <ReactLoading
-            className={"spinner"}
-            type={"spin"}
-            color="#000"
-            width="200px"
-            height="200px"
-          />
-          <p>Carregando...</p>
-        </section>
+        <Loading />
       ) : dataResponse.length > 0 ? (
         <section>
           <div className="classInformation">

@@ -45,21 +45,6 @@ export const Container = styled.div`
     }
   }
 
-  section.loading {
-    margin: 200px 0;
-    width: 100%;
-
-    .spinner {
-      background-color: transparent;
-      margin: 0px auto;
-    }
-
-    p {
-      margin-top: 50px;
-      text-align: center;
-    }
-  }
-
   section {
     padding: 20px;
 
