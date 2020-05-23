@@ -7,61 +7,40 @@ import ReactLoading from "react-loading";
 import { GrSearch } from "react-icons/gr";
 import Pagination from "react-js-pagination";
 import Searching from "../../assets/svg/searching.svg";
-import api from "../../config/api";
+import { searchApi, handleFindPhrase, getTypesAssociation } from "./functions";
+import { ColorAssociation, Result } from "./moocks";
 
 export default function Dashboard() {
-  const [dataResponse, setDataResponse] = useState([]);
-  const [dataSearch, setDataSearch] = useState("");
+  const [dataResponse, setDataResponse] = useState(Result);
+  const [dataSearch, setDataSearch] = useState("Curcumin");
 
   const [colapseStatus, setColapseStatus] = useState(-1);
 
   const [limit] = useState(4);
   const [loading, setLoading] = useState(false);
 
-  const [totalPage, setTotalPage] = useState(0);
+  const [, setTotalPage] = useState(0);
   const [totalregister, setTotalRegister] = useState(0);
   const [indexPage, setIndexPage] = useState(1);
 
-  const searchAPI = (numberPage = 1) => {
+  const handleSearch = async (numberPage = 1) => {
     setLoading(true);
 
-    api
-      .get("/search", {
-        params: {
-          dataSearch,
-          limit,
-          page: typeof numberPage === "number" ? numberPage : 1,
-        },
-      })
-      .then((res) => {
-        const response = res.data;
-
-        setLoading(false);
-
-        if (totalregister !== response.pages) {
-          var aux = parseInt(response.pages / limit);
-          if (aux * limit !== response.pages) aux += 1;
-          setTotalPage(aux);
-          setTotalRegister(response.pages);
-        }
-
-        setDataResponse(response.articles);
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
-
-  const handleFindPhrase = (text, frase) => {
-    frase.forEach((element) => {
-      text = text
-        .split(element.original_sentence)
-        .join(
-          `<span style="font-weight:bold;">${element.original_sentence}</span>`
-        );
+    const { data } = await searchApi({
+      dataSearch,
+      limit,
+      page: typeof numberPage === "number" ? numberPage : 1,
     });
 
-    return text;
+    if (totalregister !== data.pages) {
+      var aux = parseInt(data.pages / limit);
+      if (aux * limit !== data.pages) aux += 1;
+      setTotalPage(aux);
+      setTotalRegister(data.pages);
+    }
+
+    setDataResponse(data.articles);
+    setLoading(false);
   };
 
   return (
@@ -75,7 +54,7 @@ export default function Dashboard() {
             placeholder={"Enter terms separated by commas."}
             onChange={(e) => setDataSearch(e.target.value)}
           />
-          <button type="button" onClick={searchAPI}>
+          <button type="button" onClick={handleSearch}>
             <GrSearch className={"buttonSearch"} color="#FFF" />
           </button>
         </div>
@@ -120,6 +99,16 @@ export default function Dashboard() {
                       ),
                     }}
                   />
+                  <div className="DescriptionTypesAssociations">
+                    {getTypesAssociation(ele.ruleAssociationsExtracted).map(
+                      (ele, index) => (
+                        <div key={index} className="contentTypeAssociation">
+                          <span className="colorTypeAssociations" />
+                          <p>{ele.description}</p>
+                        </div>
+                      )
+                    )}
+                  </div>
                 </Collapse>
               ) : (
                 <p id="colapseFalse">{ele.abstract_article}</p>
@@ -150,7 +139,7 @@ export default function Dashboard() {
             itemClassNext={"paginateItemAtivo"}
             itemClassLast={"paginateItemAtivo"}
             onChange={(k) => {
-              searchAPI(k);
+              handleSearch(k);
               setIndexPage(k);
             }}
           />
