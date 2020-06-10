@@ -5,19 +5,25 @@ import { Container } from "./styles";
 import { GrSearch } from "react-icons/gr";
 import Pagination from "react-js-pagination";
 import Searching from "../../assets/svg/searching.svg";
-import { searchApi, handleFindPhrase, getTypesAssociation } from "./functions";
+import {
+  searchApi,
+  handleFindPhrase,
+  getTypesAssociation,
+  handleFindEntitiesPhrase,
+} from "./functions";
 import { ColorAssociation, Result } from "./moocks";
 
 import Loading from "./components/loading";
 import TagAssociation from "./components/tagAssociation";
+import DataTable from "react-data-table-component";
 
 export default function Dashboard() {
   const [dataResponse, setDataResponse] = useState([]);
-  const [dataSearch, setDataSearch] = useState("Curcumin");
+  const [dataSearch, setDataSearch] = useState("");
 
   const [colapseStatus, setColapseStatus] = useState(-1);
 
-  const [limit] = useState(4);
+  const [limit] = useState(15);
   const [loading, setLoading] = useState(false);
 
   const [, setTotalPage] = useState(0);
@@ -29,36 +35,196 @@ export default function Dashboard() {
 
     const { data } = await searchApi({
       dataSearch,
-      limit,
-      page: typeof numberPage === "number" ? numberPage : 1,
     });
 
-    if (totalregister !== data.pages) {
-      var aux = parseInt(data.pages / limit);
-      if (aux * limit !== data.pages) aux += 1;
-      setTotalPage(aux);
-      setTotalRegister(data.pages);
-    }
-
-    setDataResponse(data.articles);
+    setTotalRegister(Array.isArray(data) ? data.length : 0);
+    setDataResponse(Array.isArray(data) ? data : []);
     setLoading(false);
+  };
+
+  const columnsRule = [
+    {
+      name: "Rule",
+      width: "60%",
+      cell: (row) => {
+        const { original_sentence } = row;
+        return <p>{original_sentence?.substring(0, 80) + "..."}</p>;
+      },
+    },
+    {
+      name: "Association Type",
+      sortable: true,
+      width: "15%",
+      cell: (row) => {
+        const { description } = ColorAssociation[row.association_type];
+        return <p>{description}</p>;
+      },
+    },
+    {
+      name: "Phrase weight",
+      selector: "peso_frase",
+      sortable: true,
+      center: true,
+      width: "10%",
+    },
+    {
+      name: "Gene weight",
+      selector: "peso_genes",
+      sortable: true,
+      center: true,
+      width: "10%",
+    },
+  ];
+
+  const columns = [
+    {
+      name: "Title",
+      sortable: true,
+      cell: (row) => (
+        <div style={{ padding: "20px 0px" }}>
+          <div
+            style={{
+              fontWeight: "bold",
+              fontSize: "15px",
+              paddingBottom: "4px",
+            }}
+          >
+            {row.article.title_article?.substring(0, 120) + "..."}
+          </div>
+          {row.article.abstract_article?.substring(0, 120) + "..."}
+        </div>
+      ),
+      width: "45%",
+    },
+    {
+      name: "PMID",
+      selector: "pmid",
+      sortable: true,
+      width: "10%",
+      center: true,
+    },
+    {
+      name: "Score Phare",
+      selector: "peso_rules",
+      sortable: true,
+      width: "10%",
+      center: true,
+    },
+    {
+      name: "Pesso Entities",
+      selector: "peso_entities",
+      sortable: true,
+      width: "10%",
+      center: true,
+    },
+    {
+      name: "Score Gene",
+      selector: "peso_genes",
+      sortable: true,
+      width: "10%",
+      center: true,
+    },
+    {
+      name: "Score Total",
+      selector: "peso_final",
+      sortable: true,
+      width: "10%",
+      center: true,
+    },
+  ];
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "72px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        fontWeight: "bold", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const ExpandleComponentPhase = ({ data }) => {
+    const { original_sentence, entitiesRules, end_pos, start_pos } = data;
+
+    return (
+      <div key={JSON.stringify(data)} className="cardContainer">
+        <p
+          id="colapseTrue"
+          dangerouslySetInnerHTML={{
+            __html: handleFindEntitiesPhrase(
+              original_sentence,
+              start_pos,
+              end_pos,
+              entitiesRules
+            ),
+          }}
+        />
+      </div>
+    );
+  };
+
+  const ExpandleComponent = ({ data }) => {
+    const { article, rule } = data;
+
+    return (
+      <div key={JSON.stringify(data)} className="cardContainer">
+        <h1>{article.title_article}</h1>
+
+        <p
+          id="colapseTrue"
+          dangerouslySetInnerHTML={{
+            __html: handleFindPhrase(article.abstract_article, rule),
+          }}
+        />
+
+        {/* <p>{article.abstract_article}</p> */}
+
+        {TagAssociation(rule)}
+
+        <DataTable
+          data={rule}
+          columns={columnsRule}
+          expandableRows
+          expandableRowsComponent={<ExpandleComponentPhase />}
+          noHeader={true}
+          customStyles={{
+            headCells: {
+              style: {
+                fontWeight: "bold", // override the cell padding for head cells
+                paddingRight: "8px",
+              },
+            },
+          }}
+          pagination={true}
+          paginationRowsPerPageOptions={[5, 10, 15]}
+          paginationPerPage={5}
+        />
+
+        {/* <button id="button" type="button">
+      {!colapseStatus ? "Mais detalhes..." : "Menos detalhes..."}
+    </button> */}
+      </div>
+    );
   };
 
   return (
     <Container>
       <header>
         <h1>Kaptha</h1>
-        <div>
-          <input
-            type="text"
-            value={dataSearch}
-            placeholder={"Enter terms separated by commas."}
-            onChange={(e) => setDataSearch(e.target.value)}
-          />
-          <button type="button" onClick={handleSearch}>
-            <GrSearch className={"buttonSearch"} color="#FFF" />
-          </button>
-        </div>
+
+        <input
+          type="text"
+          value={dataSearch}
+          placeholder={"Enter terms separated by commas."}
+          onChange={(e) => setDataSearch(e.target.value)}
+        />
+        <button type="button" onClick={handleSearch}>
+          <GrSearch className={"buttonSearch"} color="#FFF" />
+        </button>
       </header>
 
       {loading ? (
@@ -76,40 +242,19 @@ export default function Dashboard() {
             <p>Termos pesquisados: {dataSearch}</p>
           </div>
 
-          {dataResponse.map((ele, index) => (
-            <div key={JSON.stringify(index)} className="cardContainer">
-              <h1>{ele.title_article}</h1>
-              {colapseStatus === index ? (
-                <Collapse isOpened={colapseStatus === index}>
-                  <p
-                    id="colapseTrue"
-                    dangerouslySetInnerHTML={{
-                      __html: handleFindPhrase(
-                        ele.abstract_article,
-                        ele.ruleAssociationsExtracted
-                      ),
-                    }}
-                  />
+          <DataTable
+            data={dataResponse}
+            columns={columns}
+            expandableRows
+            expandableRowsComponent={<ExpandleComponent />}
+            noHeader={true}
+            customStyles={customStyles}
+            pagination={true}
+            paginationRowsPerPageOptions={[20, 30, 40]}
+            paginationPerPage={20}
+          />
 
-                  {TagAssociation(ele.ruleAssociationsExtracted)}
-                </Collapse>
-              ) : (
-                <p id="colapseFalse">{ele.abstract_article}</p>
-              )}
-
-              <button
-                id="button"
-                type="button"
-                onClick={() =>
-                  setColapseStatus((state) => (state === index ? -1 : index))
-                }
-              >
-                {!colapseStatus ? "Mais detalhes..." : "Menos detalhes..."}
-              </button>
-            </div>
-          ))}
-
-          <Pagination
+          {/* <Pagination
             activePage={indexPage}
             itemsCountPerPage={4}
             totalItemsCount={totalregister}
@@ -125,7 +270,7 @@ export default function Dashboard() {
               handleSearch(k);
               setIndexPage(k);
             }}
-          />
+          /> */}
         </section>
       ) : (
         <section className="containerInformationSearch">

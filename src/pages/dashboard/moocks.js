@@ -19,60 +19,148 @@ export const ColorAssociation = {
     description: "Polifenol and Gene",
     color: "#F67652",
   },
+  cancer_type_entity_cell: {
+    description: "Cancer",
+    color: "#FFAB40",
+  },
+  cancer_type_entity_e: {
+    description: "Cancer",
+    color: "#FFAB40",
+  },
+  cancer_type_entity_p: {
+    description: "Cancer",
+    color: "#FFAB40",
+  },
+  chemical_entity_e: {
+    description: "Polifenol",
+    color: "#33BBAF",
+  },
+  chemical_entity_p: {
+    description: "Polifenol",
+    color: "#33BBAF",
+  },
+  gene_entity: {
+    description: "Cancer",
+    color: "#133B96",
+  },
+  gene_hgnc_entity: {
+    description: "Cancer",
+    color: "#133B96",
+  },
 };
 
 export const Result = [
   {
-    id: 17424,
+    id: 17785,
     title_article:
-      "Tunicamycin induces resistance to camptothecin and etoposide in human hepatocellular carcinoma cells: role of cell-cycle arrest and GRP78.",
+      "Protoapigenone, a novel flavonoid, induces apoptosis in human prostate cancer cells through activation of p38 mitogen-activated protein kinase and c-Jun NH2-terminal kinase 1/2.",
     abstract_article:
-      "Hepatocellular carcinoma is chemoresistant to many anticancer drugs. Tunicamycin, an N-glycosylation inhibitor, causes unfolded protein response and is widely used as pharmacological inducer of endoplasmic reticulum stress. In this study, several designs were used to investigate the resistance mechanism to camptothecin and etoposide in hepatocellular carcinoma Hep3B cells. Tunicamycin significantly inhibited apoptosis induced by camptothecin or etoposide. Tunicamycin neither modified the topoisomerase levels nor inhibited the ATM activation caused by camptothecin and etoposide. The data suggest that tunicamycin-induced resistance may result from the downstream events of drug-trapped topoisomerase-DNA complexes and DNA double-strand breaks. Camptothecin and etoposide caused an increase of protein expression of several cell-cycle regulators and induced the cleavage of Bcl-2 family of proteins. These intracellular molecular events were abolished by tunicamycin. A design of postaddition of tunicamycin demonstrated that G1 checkpoint arrest contributed to the resistance mechanism. Curcumin, another G1 arrest-inducing agent in this study, was able to induce a similar resistant effect. Furthermore, the cells transfected with GRP78 siRNA were partly resistant to tunicamycin-induced apoptosis but not the inhibitory effect on cell-cycle regulators indicating that GRP78 and G1 arrest are two independent factors to tunicamycin-induced resistance mechanism. In conclusion, the data suggest that tunicamycin induces the resistance to topoisomerase inhibitors through GRP78 up-regulation and G1 arrest of the cell cycle. The findings also prompt the deliberation that the resistance can be caused during combined administration of chemotherapeutic drugs and Chinese herbal medicines, which induce endoplasmic reticulum stress and/or cell-cycle arrest in cancer cells.",
-    pmid: 19777212,
+      "In this study, we investigated the anticancer effect of protoapigenone on human prostate cancer cells. Protoapigenone inhibited cell growth through arresting cancer cells at S and G(2)/M phases as well as inducing apoptosis. Blockade of cell cycle by protoapigenone was associated with an increase in the levels of inactivated phospho (p)-Cdc25C (Ser216) and a decrease in the levels of activated p-cyclin B1 (Ser147), cyclin B1, and cyclin-dependent kinase (Cdk) 2. Protoapigenone triggered apoptosis by increasing the levels of cleaved poly(ADP-ribose) polymerase and caspase-3. In addition, activation of p38 mitogen-activated protein kinase (MAPK) and c-Jun NH2-terminal kinase (JNK)1/2 was a critical mediator in protoapigenone-induced cell death. Inhibition of the expression of p38 MAPK and JNK1/2 by pharmacological inhibitors or specific small interfering RNA reversed the protoapigenone-induced apoptosis through decreasing the level of cleaved caspase-3. In contrast, p38 MAPK, but not JNK1/2, was involved in the protoapigenone-mediated S and G(2)/M arrest by modulating the levels of Cdk2 and p-Cdc25C (Ser216). Moreover, in vivo xenograft study showed that protoapigenone had a significant inhibition of prostate tumor growth without major side effects on the mice we tested. This inhibition was associated with induction of apoptosis and activation of p38 MAPK and JNK1/2 in protoapigenone-treated tumor tissues. In conclusion, our results demonstrated protoapigenone suppressed prostate cancer cell growth through the activation of p38 MAPK and JNK1/2, with the potential to be developed as a chemotherapeutic agent for prostate cancer.",
+    pmid: 18337475,
+    peso_final: 979.228637413395,
+    peso_rules_normalized: 220,
+    peso_genes_normalized: 33,
+    peso_entities_normalized: 33,
     ruleAssociationsExtracted: [
       {
-        HM3: "nao",
-        HM4: "nao",
-        HM5: "nao",
-        HM6: "nao",
-        HM7: "nao",
-        HM8: "nao",
-        HM9: "nao",
-        HM10: "nao",
-        HM12: "nao",
-        R1: "nao",
-        R2: "nao",
-        R3: "nao",
-        R4: "nao",
-        R5: "nao",
-        R6: "nao",
-        R7: "nao",
-        R8: "nao",
-        R9: "nao",
-        R10: "nao",
-        R11: "nao",
-        R12: "nao",
-        R13: "nao",
-        R14: "nao",
-        R15: "nao",
-        association_type: "polifenol-",
-        created_at: "2020-04-26T05:19:04.220Z",
-        end_pos: "1336",
-        has_entity: "sim",
-        id: 10705,
-        is_association: "nao",
-        is_title: "nao",
-        original_sentence:
-          "Curcumin, another G1 arrest-inducing agent in this study, was able to induce a similar resistant effect.",
-        pmid_article: 19777212,
+        association_type: "polifenol-cancer",
+        start_pos: "281",
+        end_pos: "402",
         sentence:
-          "CH&, another G1 arrest-inducing agent in this study, was able to induce a similar resistant effect.",
-        sentence_id: "197772121232",
-        start_pos: "1232",
-        updated_at: "2020-04-26T05:19:04.220Z",
+          "CH& inhibited cell growth through arresting D&S cells at S and G(2)/M phases as well as inducing apoptosis.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-gene",
+        start_pos: "645",
+        end_pos: "758",
+        sentence:
+          "CH& triggered apoptosis by increasing the levels of cleaved poly(ADP-ribose) polymerase and G&N .",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-gene",
+        start_pos: "931",
+        end_pos: "1143",
+        sentence:
+          "Inhibition of the expression of p38 MAPK and G&N by pharmacological inhibitors or specific small interfering RNA reversed the CH& -induced apoptosis through decreasing the level of cleaved G&N .",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-gene",
+        start_pos: "1144",
+        end_pos: "1302",
+        sentence:
+          "In contrast, p38 MAPK, but not G&N, was involved in the CH& -mediated S and G(2)/M arrest by modulating the levels of G&N and p- G&N (Ser216).",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-cancer",
+        start_pos: "178",
+        end_pos: "280",
+        sentence:
+          "In this study, we investigated the anticancer effect of CH& on human D&S cells.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-gene",
+        start_pos: "759",
+        end_pos: "930",
+        sentence:
+          "In addition, activation of G&N (MAPK) and c-Jun NH2-terminal kinase (JNK)1/2 was a critical mediator in CH& -induced cell death.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-cancer",
+        start_pos: "1",
+        end_pos: "178",
+        sentence:
+          "CH&, a novel CH& d, induces apoptosis in human D&S r cells through activation of G&N e and c-Jun NH2-terminal kinase 1/2.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-cancer",
+        start_pos: "1303",
+        end_pos: "1467",
+        sentence:
+          "Moreover, in vivo xenograft study showed that CH& had a significant inhibition of D&S growth without major side effects on the mice we tested.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-cancer",
+        start_pos: "1606",
+        end_pos: "1830",
+        sentence:
+          "In conclusion, our results demonstrated CH& suppressed D&S cell growth through the activation of p38 MAPK and G&N, with the potential to be developed as a chemotherapeutic agent for D&S.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-gene",
+        start_pos: "403",
+        end_pos: "644",
+        sentence:
+          "Blockade of cell cycle by CH& was associated with an increase in the levels of inactivated phospho (p)- G&N (Ser216) and a decrease in the levels of activated p- G&N (Ser147), G&N, and G&N .",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
+      },
+      {
+        association_type: "polifenol-cancer",
+        start_pos: "1468",
+        end_pos: "1605",
+        sentence:
+          "This inhibition was associated with induction of apoptosis and activation of p38 MAPK and G&N in CH& -treated D&S tissues.",
+        peso_artigo: 20,
+        peso_artigo_genes: 3,
       },
     ],
-    created_at: "2020-04-26T04:54:56.602Z",
-    updated_at: "2020-04-26T04:54:56.602Z",
   },
 ];

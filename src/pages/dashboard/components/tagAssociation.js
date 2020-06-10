@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Container = styled.div`
   margin-top: 20px;
 
-  p {
+  p.title {
     /* margin-top: 10px; */
     font-weight: bold;
   }
@@ -35,7 +35,7 @@ const TagColor = styled.div`
 function TagAssociation(ruleAssociationsExtracted) {
   return (
     <Container>
-      <p>Phrase ratings</p>
+      <p className="title">Phrase ratings</p>
       <div className="DescriptionTypesAssociations">
         {getTypesAssociation(ruleAssociationsExtracted).map((ele, index) => (
           <div key={index} className="contentTypeAssociation">
