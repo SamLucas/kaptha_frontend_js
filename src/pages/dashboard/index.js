@@ -19,7 +19,8 @@ import DataTable from "react-data-table-component";
 
 export default function Dashboard() {
   const [dataResponse, setDataResponse] = useState([]);
-  const [dataSearch, setDataSearch] = useState("");
+  const [dataSearchPolyphenol, setDataSearchPolyphenol] = useState("");
+  const [dataSearchChemical, setDataSearchChemical] = useState("");
 
   const [colapseStatus, setColapseStatus] = useState(-1);
 
@@ -34,7 +35,8 @@ export default function Dashboard() {
     setLoading(true);
 
     const { data } = await searchApi({
-      dataSearch,
+      dataSearchPolyphenol,
+      dataSearchChemical,
     });
 
     setTotalRegister(Array.isArray(data) ? data.length : 0);
@@ -218,9 +220,15 @@ export default function Dashboard() {
 
         <input
           type="text"
-          value={dataSearch}
-          placeholder={"Enter terms separated by commas."}
-          onChange={(e) => setDataSearch(e.target.value)}
+          value={dataSearchPolyphenol}
+          placeholder={"Enter with polyphenol."}
+          onChange={(e) => setDataSearchPolyphenol(e.target.value)}
+        />
+        <input
+          type="text"
+          value={dataSearchChemical}
+          placeholder={"Enter with chemical."}
+          onChange={(e) => setDataSearchChemical(e.target.value)}
         />
         <button type="button" onClick={handleSearch}>
           <GrSearch className={"buttonSearch"} color="#FFF" />
@@ -239,7 +247,10 @@ export default function Dashboard() {
                 ? "No record found."
                 : `${totalregister} records found.`}
             </h1>
-            <p>Termos pesquisados: {dataSearch}</p>
+            <p>
+              Termos pesquisados: {dataSearchPolyphenol}{" "}
+              {dataSearchChemical !== "" && ", "} {dataSearchChemical}.
+            </p>
           </div>
 
           <DataTable

@@ -6,6 +6,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
     background-color: white;
+    justify-content: space-between;
 
     h1 {
       margin: 20px 40px;
@@ -25,9 +26,11 @@ export const Container = styled.div`
       margin: auto 0px;
 
       width: 40%;
-      border-radius: 25px;
-      box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
-      border-color: transparent;
+      /* border-radius: 25px;
+      box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2); */
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      margin-right: 10px;
+
       /* 
       /* border: 2px;
       margin-right: 10px;
