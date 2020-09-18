@@ -5,6 +5,8 @@ import { Container } from "./styles";
 import { GrSearch } from "react-icons/gr";
 import Pagination from "react-js-pagination";
 import Searching from "../../assets/svg/searching.svg";
+import noData from "../../assets/svg/noData.svg";
+
 import {
   searchApi,
   handleFindPhrase,
@@ -26,6 +28,7 @@ export default function Dashboard() {
 
   const [limit] = useState(15);
   const [loading, setLoading] = useState(false);
+  const [noDataFound, setNoDataFound] = useState(false);
 
   const [, setTotalPage] = useState(0);
   const [totalregister, setTotalRegister] = useState(0);
@@ -33,6 +36,7 @@ export default function Dashboard() {
 
   const handleSearch = async (numberPage = 1) => {
     setLoading(true);
+    setNoDataFound(false);
 
     const { data } = await searchApi({
       dataSearchPolyphenol,
@@ -42,6 +46,7 @@ export default function Dashboard() {
     setTotalRegister(Array.isArray(data) ? data.length : 0);
     setDataResponse(Array.isArray(data) ? data : []);
     setLoading(false);
+    data.length === 0 && setNoDataFound(true);
   };
 
   const columnsRule = [
@@ -222,13 +227,39 @@ export default function Dashboard() {
           type="text"
           value={dataSearchPolyphenol}
           placeholder={"Enter with polyphenol."}
-          onChange={(e) => setDataSearchPolyphenol(e.target.value)}
+          onChange={(e) => {
+            const str = e.target.value;
+            var splitStr = str.toLowerCase().split(" ");
+            for (var i = 0; i < splitStr.length; i++) {
+              // You do not need to check if i is larger than splitStr length, as your for does that for you
+              // Assign it back to the array
+              splitStr[i] =
+                splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+            }
+            // Directly return the joined string
+
+            setDataSearchPolyphenol(splitStr.join(" "));
+          }}
+          autoCapitalize="characters"
         />
         <input
           type="text"
           value={dataSearchChemical}
           placeholder={"Enter with chemical."}
-          onChange={(e) => setDataSearchChemical(e.target.value)}
+          onChange={(e) => {
+            const str = e.target.value;
+            var splitStr = str.toLowerCase().split(" ");
+            for (var i = 0; i < splitStr.length; i++) {
+              // You do not need to check if i is larger than splitStr length, as your for does that for you
+              // Assign it back to the array
+              splitStr[i] =
+                splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+            }
+            // Directly return the joined string
+
+            setDataSearchChemical(splitStr.join(" "));
+          }}
+          autoCapitalize="characters"
         />
         <button type="button" onClick={handleSearch}>
           <GrSearch className={"buttonSearch"} color="#FFF" />
@@ -248,8 +279,10 @@ export default function Dashboard() {
                 : `${totalregister} records found.`}
             </h1>
             <p>
-              Termos pesquisados: {dataSearchPolyphenol}{" "}
-              {dataSearchChemical !== "" && ", "} {dataSearchChemical}.
+              Termos pesquisados:{" "}
+              {JSON.parse(JSON.stringify(dataSearchPolyphenol))}{" "}
+              {dataSearchChemical !== "" && dataSearchPolyphenol !== "" && ", "}{" "}
+              {JSON.parse(JSON.stringify(dataSearchChemical))}.
             </p>
           </div>
 
@@ -284,12 +317,20 @@ export default function Dashboard() {
           /> */}
         </section>
       ) : (
+        dataResponse.length === 0 &&
+        dataSearchPolyphenol === "" &&
+        dataSearchChemical === "" && (
+          <section className="containerInformationSearch">
+            <img className="img" src={Searching} alt="" />
+            <p>Enter the terms to perform the search in our database.</p>
+          </section>
+        )
+      )}
+
+      {noDataFound && (
         <section className="containerInformationSearch">
-          <img className="img" src={Searching} alt="" />
-          {/* <p>
-            Digite os termos separados por virgula para realizar a busca em
-            nossa base de dados.
-          </p> */}
+          <img className="img" src={noData} alt="" />
+          <p>No results found.</p>
         </section>
       )}
     </Container>

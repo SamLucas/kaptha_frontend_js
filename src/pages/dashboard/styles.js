@@ -30,6 +30,7 @@ export const Container = styled.div`
       box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2); */
       border: 1px solid rgba(0, 0, 0, 0.2);
       margin-right: 10px;
+      text-transform: capitalize;
 
       /* 
       /* border: 2px;
@@ -178,6 +179,7 @@ export const Container = styled.div`
     }
 
     p {
+      margin-top: 40px;
       text-align: center;
     }
   }
