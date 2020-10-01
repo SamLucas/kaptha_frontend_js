@@ -6,7 +6,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
     background-color: white;
-    justify-content: space-between;
+    align-content: "center";
 
     h1 {
       margin: 20px 40px;
@@ -14,48 +14,8 @@ export const Container = styled.div`
       text-align: center;
     }
 
-    /* div { */
-    /* display: flex;
-      justify-content: center;
-      align-content: center;
-      margin-bottom: -40px; */
-
-    input {
-      height: 50px;
-      padding: 15px 20px;
+    div {
       margin: auto 0px;
-
-      width: 40%;
-      /* border-radius: 25px;
-      box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2); */
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      margin-right: 10px;
-      text-transform: capitalize;
-
-      /* 
-      /* border: 2px;
-      margin-right: 10px;
-      width: 40%;
-      */
-    }
-    /* } */
-
-    button {
-      border: 0;
-      background: white;
-      text-align: center;
-      padding: 5px 0px 5px -50px;
-      margin: auto 20px;
-      border-radius: 50%;
-      height: 45px;
-      width: 45px;
-      cursor: pointer;
-      /* font-weight: bold; */
-      box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
-      color: green;
-
-      .buttonSearch {
-      }
     }
   }
 

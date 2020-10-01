@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Collapse } from "react-collapse";
 import { Container } from "./styles";
 
@@ -6,6 +6,8 @@ import { GrSearch } from "react-icons/gr";
 import Pagination from "react-js-pagination";
 import Searching from "../../assets/svg/searching.svg";
 import noData from "../../assets/svg/noData.svg";
+
+import api from "../../config/api";
 
 import {
   searchApi,
@@ -18,6 +20,10 @@ import { ColorAssociation, Result } from "./moocks";
 import Loading from "./components/loading";
 import TagAssociation from "./components/tagAssociation";
 import DataTable from "react-data-table-component";
+
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export default function Dashboard() {
   const [dataResponse, setDataResponse] = useState([]);
@@ -218,52 +224,100 @@ export default function Dashboard() {
     );
   };
 
+  const [dataCompletePolyphenol, setDataCompletePolyphenol] = useState([]);
+  const [dataCompleteCancer, setDataCompleteCancer] = useState([]);
+
+  useEffect(() => {
+    const data = { data: dataSearchPolyphenol, name: "dataSearchPolyphenol" };
+    debounceEvent(loadDataComplete, data, 2000);
+  }, [dataSearchPolyphenol]);
+
+  useEffect(() => {
+    const data = { data: dataSearchChemical, name: "dataSearchChemical" };
+    debounceEvent(loadDataComplete, data, 2000);
+  }, [dataSearchChemical]);
+
+  const debounceEvent = (fn, params, wait = 1000, time) => {
+    clearTimeout(
+      time,
+      (time = setTimeout(() => {
+        fn(params);
+      }, wait))
+    );
+  };
+
+  const loadDataComplete = async ({ data, name }) => {
+    const response = await api
+      .get("/searchTerms", {
+        params: {
+          name: data,
+          type: name !== "dataSearchPolyphenol" ? "cancer" : "polifenol",
+        },
+      })
+      .then(({ data }) => data);
+
+    name === "dataSearchPolyphenol"
+      ? setDataCompletePolyphenol(response)
+      : setDataCompleteCancer(response);
+  };
+
   return (
     <Container>
       <header>
         <h1>Kaptha</h1>
 
-        <input
-          type="text"
-          value={dataSearchPolyphenol}
-          placeholder={"Enter with polyphenol."}
-          onChange={(e) => {
-            const str = e.target.value;
-            var splitStr = str.toLowerCase().split(" ");
-            for (var i = 0; i < splitStr.length; i++) {
-              // You do not need to check if i is larger than splitStr length, as your for does that for you
-              // Assign it back to the array
-              splitStr[i] =
-                splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-            }
-            // Directly return the joined string
-
-            setDataSearchPolyphenol(splitStr.join(" "));
+        <Autocomplete
+          id="combo-box-demo"
+          options={dataCompletePolyphenol}
+          getOptionLabel={(option) => option.label}
+          onSelectCapture={(e) => {
+            const txt = e.target.value;
+            setDataSearchPolyphenol(txt);
           }}
-          autoCapitalize="characters"
+          style={{ width: "30%", margin: "auto 0" }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              value={dataSearchPolyphenol}
+              onChange={(e) => setDataSearchPolyphenol(e.target.value)}
+              label="Enter with polyphenol..."
+              variant="outlined"
+            />
+          )}
         />
-        <input
-          type="text"
-          value={dataSearchChemical}
-          placeholder={"Enter with chemical."}
-          onChange={(e) => {
-            const str = e.target.value;
-            var splitStr = str.toLowerCase().split(" ");
-            for (var i = 0; i < splitStr.length; i++) {
-              // You do not need to check if i is larger than splitStr length, as your for does that for you
-              // Assign it back to the array
-              splitStr[i] =
-                splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-            }
-            // Directly return the joined string
 
-            setDataSearchChemical(splitStr.join(" "));
+        <Autocomplete
+          id="combo-box-demo"
+          options={dataCompleteCancer}
+          getOptionLabel={(option) => option.label}
+          onSelectCapture={(e) => {
+            const txt = e.target.value;
+            setDataSearchChemical(txt);
           }}
-          autoCapitalize="characters"
+          style={{
+            width: "30%",
+            margin: "auto 0",
+            marginLeft: 10,
+            marginRight: 20,
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              value={dataSearchChemical}
+              onChange={(e) => {
+                const txt = e.target.value;
+                setDataSearchChemical(txt);
+              }}
+              label="Enter with chemical..."
+              variant="outlined"
+            />
+          )}
         />
-        <button type="button" onClick={handleSearch}>
-          <GrSearch className={"buttonSearch"} color="#FFF" />
-        </button>
+        <div>
+          <Button variant="outlined" color="primary" onClick={handleSearch}>
+            Search
+          </Button>
+        </div>
       </header>
 
       {loading ? (
