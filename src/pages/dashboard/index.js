@@ -40,6 +40,8 @@ export default function Dashboard() {
   const [totalregister, setTotalRegister] = useState(0);
   const [indexPage, setIndexPage] = useState(1);
 
+  const [textSearch, setTextSearch] = useState([]);
+
   const handleSearch = async (numberPage = 1) => {
     setLoading(true);
     setNoDataFound(false);
@@ -48,6 +50,13 @@ export default function Dashboard() {
       dataSearchPolyphenol,
       dataSearchChemical,
     });
+
+    if (data) {
+      const text = `${dataSearchPolyphenol}${
+        dataSearchChemical !== "" && dataSearchPolyphenol !== "" && ", "
+      }${dataSearchChemical}.}`;
+      setTextSearch(text);
+    }
 
     setTotalRegister(Array.isArray(data) ? data.length : 0);
     setDataResponse(Array.isArray(data) ? data : []);
@@ -226,6 +235,7 @@ export default function Dashboard() {
 
   const [dataCompletePolyphenol, setDataCompletePolyphenol] = useState([]);
   const [dataCompleteCancer, setDataCompleteCancer] = useState([]);
+  const [loadingAutoComplete, setLoadingAutoComplete] = useState(false);
 
   useEffect(() => {
     const data = { data: dataSearchPolyphenol, name: "dataSearchPolyphenol" };
@@ -247,6 +257,7 @@ export default function Dashboard() {
   };
 
   const loadDataComplete = async ({ data, name }) => {
+    setLoadingAutoComplete(true);
     const response = await api
       .get("/searchTerms", {
         params: {
@@ -259,6 +270,7 @@ export default function Dashboard() {
     name === "dataSearchPolyphenol"
       ? setDataCompletePolyphenol(response)
       : setDataCompleteCancer(response);
+    setLoadingAutoComplete(false);
   };
 
   return (
@@ -267,8 +279,11 @@ export default function Dashboard() {
         <h1>Kaptha</h1>
 
         <Autocomplete
-          id="combo-box-demo"
+          id="debug"
+          debug
+          disabled={loading}
           options={dataCompletePolyphenol}
+          loading={loadingAutoComplete}
           getOptionLabel={(option) => option.label}
           onSelectCapture={(e) => {
             const txt = e.target.value;
@@ -287,7 +302,9 @@ export default function Dashboard() {
         />
 
         <Autocomplete
-          id="combo-box-demo"
+          id="debug"
+          debug
+          disabled={loading}
           options={dataCompleteCancer}
           getOptionLabel={(option) => option.label}
           onSelectCapture={(e) => {
@@ -314,7 +331,12 @@ export default function Dashboard() {
           )}
         />
         <div>
-          <Button variant="outlined" color="primary" onClick={handleSearch}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleSearch}
+            disabled={loading}
+          >
             Search
           </Button>
         </div>
@@ -332,12 +354,7 @@ export default function Dashboard() {
                 ? "No record found."
                 : `${totalregister} records found.`}
             </h1>
-            <p>
-              Termos pesquisados:{" "}
-              {JSON.parse(JSON.stringify(dataSearchPolyphenol))}{" "}
-              {dataSearchChemical !== "" && dataSearchPolyphenol !== "" && ", "}{" "}
-              {JSON.parse(JSON.stringify(dataSearchChemical))}.
-            </p>
+            <p>Termos pesquisados: {textSearch}</p>
           </div>
 
           <DataTable
