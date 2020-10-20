@@ -12,31 +12,30 @@ const InputAutoComplete = ({
 }) => {
   return (
     <Autocomplete
-      id="debug"
-      debug
+      className="combo-box-demo"
       disabled={disabled}
-      options={options}
       loading={loading}
+      options={options}
       getOptionLabel={(option) => option.label}
-      onSelectCapture={(e) => {
-        const txt = e.target.value;
-        setData(txt);
-      }}
       style={{
         width: "30%",
         margin: "auto 0",
-        // marginLeft: 10,
         marginRight: 20,
       }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          value={data}
-          onChange={(e) => setData(e.target.value)}
-          label={label}
-          variant="outlined"
-        />
-      )}
+      onChange={(e, obj) => {
+        setData(obj?.value ? obj?.value : obj?.label ? obj?.label : "");
+      }}
+      renderInput={(params, teste) => {
+        return (
+          <TextField
+            {...params}
+            label={label}
+            value={data}
+            variant="outlined"
+            disabled={true}
+          />
+        );
+      }}
     />
   );
 };

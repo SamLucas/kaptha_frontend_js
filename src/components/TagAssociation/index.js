@@ -1,6 +1,6 @@
 import React from "react";
 
-import SearchController from "src/controller/search/index";
+import SearchController from "src/controller/Search";
 import { ColorAssociation } from "src/config/colors";
 
 import { Container, TagColor } from "./styles";

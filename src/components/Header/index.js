@@ -197,7 +197,11 @@ export default function PersistentDrawerLeft({ children }) {
         <Divider />
         <List>
           {ExtraOptions.map(({ name, icon }, index) => (
-            <ListItem button key={name}>
+            <ListItem
+              button
+              key={name}
+              onClick={() => history.push(name.split(" ").join(""))}
+            >
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText style={{ marginLeft: -15 }} primary={name} />
             </ListItem>

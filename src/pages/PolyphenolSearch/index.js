@@ -16,9 +16,9 @@ import ExpandleComponent from "src/components/ExpandleComponent";
 import api from "src/config/api";
 import { columns, customStyles } from "src/config/DataTableConfig";
 
-import SearchController from "src/controller/search/index";
+import SearchController from "src/controller/Search";
 
-export default function Dashboard() {
+export default function PolyphenolSearch() {
   const [dataResponse, setDataResponse] = useState([]);
   const [dataSearchPolyphenol, setDataSearchPolyphenol] = useState("");
 
@@ -144,7 +144,7 @@ export default function Dashboard() {
               variant="outlined"
               color="primary"
               onClick={handleSearch}
-              disabled={loading}
+              disabled={loading || dataSearchPolyphenol === ""}
             >
               Search
             </Button>

@@ -7,7 +7,7 @@ import {
 import { columnsRule } from "src/config/DataTableConfig";
 
 import DataTable from "react-data-table-component";
-import SearchController from "src/controller/search/index";
+import SearchController from "src/controller/Search";
 
 const ExpandleComponentPhase = ({ data }) => {
   const { original_sentence, entitiesRules, end_pos, start_pos } = data;
