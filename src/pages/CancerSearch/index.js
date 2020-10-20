@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 
-import { Container } from "./styles";
+import { Container } from "src/styles/Search";
 
 import DataTable from "react-data-table-component";
 import Button from "@material-ui/core/Button";
 
-import Searching from "../../assets/svg/searching.svg";
-import noData from "../../assets/svg/noData.svg";
-import InputAutoComplete from "../../components/InputAutoComplete";
-import ExpandleComponent from "../dashboard/components/expandleComponent";
+import Searching from "src/assets/svg/searching.svg";
+import noData from "src/assets/svg/noData.svg";
 
-import Header from "../../components/Header";
-import Loading from "./components/loading";
+import InputAutoComplete from "src/components/InputAutoComplete";
+import Loading from "src/components/loading";
+import Header from "src/components/Header";
+import ExpandleComponent from "src/components/ExpandleComponent";
 
-import api from "../../config/api";
-import { columns, customStyles } from "../../config/DataTableConfig";
+import api from "src/config/api";
+import { columns, customStyles } from "src/config/DataTableConfig";
 
 import SearchController from "src/controller/search/index";
-// import { Result } from "./moocks";
 
-export default function Dashboard() {
+export default function CancerSearch() {
   const [dataResponse, setDataResponse] = useState([]);
-  const [dataSearchPolyphenol, setDataSearchPolyphenol] = useState("");
+
   const [dataSearchChemical, setDataSearchChemical] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -36,14 +35,11 @@ export default function Dashboard() {
     setNoDataFound(false);
 
     const { data } = await SearchController.search({
-      dataSearchPolyphenol,
       dataSearchChemical,
     });
 
     if (data) {
-      const text = `${dataSearchPolyphenol}${
-        dataSearchChemical !== "" && dataSearchPolyphenol !== "" && ", "
-      }${dataSearchChemical}.}`;
+      const text = `${dataSearchChemical}.`;
       setTextSearch(text);
     }
 
@@ -53,14 +49,8 @@ export default function Dashboard() {
     data.length === 0 && setNoDataFound(true);
   };
 
-  const [dataCompletePolyphenol, setDataCompletePolyphenol] = useState([]);
   const [dataCompleteCancer, setDataCompleteCancer] = useState([]);
   const [loadingAutoComplete, setLoadingAutoComplete] = useState(false);
-
-  useEffect(() => {
-    const data = { data: dataSearchPolyphenol, name: "dataSearchPolyphenol" };
-    debounceEvent(loadDataComplete, data, 2000);
-  }, [dataSearchPolyphenol]);
 
   useEffect(() => {
     const data = { data: dataSearchChemical, name: "dataSearchChemical" };
@@ -82,14 +72,11 @@ export default function Dashboard() {
       .get("/searchTerms", {
         params: {
           name: data,
-          type: name !== "dataSearchPolyphenol" ? "cancer" : "polifenol",
+          type: "cancer",
         },
       })
       .then(({ data }) => data);
-
-    name === "dataSearchPolyphenol"
-      ? setDataCompletePolyphenol(response)
-      : setDataCompleteCancer(response);
+    setDataCompleteCancer(response);
     setLoadingAutoComplete(false);
   };
 
@@ -114,7 +101,7 @@ export default function Dashboard() {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Termos pesquisados: {textSearch}</p>
+            <p>Search terms: {textSearch}</p>
           </div>
 
           <DataTable
@@ -130,11 +117,7 @@ export default function Dashboard() {
           />
         </section>
       );
-    } else if (
-      dataResponse.length === 0 &&
-      dataSearchPolyphenol === "" &&
-      dataSearchChemical === ""
-    ) {
+    } else if (dataResponse.length === 0 && dataSearchChemical === "") {
       return (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />
@@ -148,15 +131,6 @@ export default function Dashboard() {
     <Header>
       <Container>
         <header>
-          <InputAutoComplete
-            disabled={loading}
-            options={dataCompletePolyphenol}
-            loading={loadingAutoComplete}
-            setData={setDataSearchPolyphenol}
-            data={dataSearchPolyphenol}
-            label="Enter with polyphenol..."
-          />
-
           <InputAutoComplete
             disabled={loading}
             options={dataCompleteCancer}

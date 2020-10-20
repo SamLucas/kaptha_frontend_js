@@ -18,10 +18,18 @@ export const handleFindPhrase = (text, frase) => {
     const { original_sentence, association_type } = element;
     const colorPhare = ColorAssociation[association_type].color;
 
+    const TextPhrases = handleFindEntitiesPhrase(
+      original_sentence,
+      element.start_pos,
+      0,
+      element.entitiesRules,
+      true
+    );
+
     text = text
       .split(original_sentence)
       .join(
-        `<span style="font-weight:bold;text-decoration: underline ${colorPhare};color:${colorPhare}">${original_sentence}</span>`
+        `<span style="font-weight:bold;text-decoration: underline ${colorPhare};color:${colorPhare}">${TextPhrases}</span>`
       );
   });
 
@@ -32,20 +40,24 @@ export const handleFindEntitiesPhrase = (
   text,
   start_pos,
   end_pos,
-  entitiesRules
+  entitiesRules,
+  background
 ) => {
   const textAux = text;
   entitiesRules.forEach((element) => {
     const { start, end, entity_type } = element;
-    const phare = textAux.substr(start - start_pos, end - start);
+    const phare = textAux.substr(start - start_pos, end + 1 - (start + 1));
     const colorPhare = ColorAssociation[entity_type].color;
 
-    console.log(text.split(phare));
-    text = text
-      .split(phare)
-      .join(
-        `<span style="font-weight:bold;text-decoration: underline ${colorPhare};color:${colorPhare}">${phare}</span>`
-      );
+    if (phare) {
+      text = text
+        .split(phare)
+        .join(
+          background
+            ? `<span style="font-weight:bold;background-color:${colorPhare};color:white">${phare}</span>`
+            : `<span style="font-weight:bold;text-decoration: underline ${colorPhare};color:${colorPhare}">${phare}</span>`
+        );
+    }
   });
 
   return text;

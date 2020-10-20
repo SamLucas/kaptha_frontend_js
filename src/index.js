@@ -1,6 +1,6 @@
 import React from "react";
+import Router from "src/routes";
 import ReactDOM from "react-dom";
-import App from "./pages/dashboard";
 import { GlobalStyle, Typography } from "./config/styles";
 
 import "fontsource-roboto";
@@ -9,7 +9,7 @@ const Main = () => (
   <>
     <GlobalStyle />
     <Typography />
-    <App />
+    <Router />
   </>
 );
 
