@@ -10,7 +10,15 @@ function CrossSearch() {
         response = [
           ...new Set([
             ...response,
-            { label: `${cancer} (${quant})`, value: cancer },
+            {
+              label: `${cancer} (${quant})`,
+              value: cancer,
+              extraData: {
+                ...ele,
+                termIdentificator: cancer,
+                typeTerm: "cancer",
+              },
+            },
           ]),
         ];
       }
@@ -27,7 +35,15 @@ function CrossSearch() {
         response = [
           ...new Set([
             ...response,
-            { label: `${polifenol} (${quant})`, value: polifenol },
+            {
+              label: `${polifenol} (${quant})`,
+              value: polifenol,
+              extraData: {
+                ...ele,
+                termIdentificator: polifenol,
+                typeTerm: "polifenol",
+              },
+            },
           ]),
         ];
       }

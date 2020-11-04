@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   margin-top: 20px;
@@ -21,10 +21,20 @@ export const Container = styled.div`
   }
 `;
 
-export const TagColor = styled.div`
+const underline = css`
+  height: 3px;
+  width: 10px;
+`;
+
+const circle = css`
   height: 10px;
   width: 10px;
-  margin: 4px 5px 2px;
-  background-color: ${(props) => props.color};
   border-radius: 50px;
+`;
+
+export const TagColor = styled.div`
+  margin: auto 5px;
+  background-color: ${(props) => props.color};
+  ${props => props.underline ? `${underline}` : `${circle}`}
+  
 `;

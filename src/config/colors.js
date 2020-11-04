@@ -3,6 +3,14 @@ export const ColorAssociation = {
     description: "Polifenol",
     color: "#33BBAF",
   },
+  chemical_entity_e: {
+    description: "Polifenol",
+    color: "#33BBAF",
+  },
+  chemical_entity_p: {
+    description: "Polifenol",
+    color: "#33BBAF",
+  },
   "cancer-": {
     description: "Cancer",
     color: "#FFAB40",
@@ -31,20 +39,12 @@ export const ColorAssociation = {
     description: "Cancer",
     color: "#FFAB40",
   },
-  chemical_entity_e: {
-    description: "Polifenol",
-    color: "#33BBAF",
-  },
-  chemical_entity_p: {
-    description: "Polifenol",
-    color: "#33BBAF",
-  },
   gene_entity: {
-    description: "Cancer",
+    description: "Gene",
     color: "#133B96",
   },
   gene_hgnc_entity: {
-    description: "Cancer",
+    description: "Gene",
     color: "#133B96",
   },
 };

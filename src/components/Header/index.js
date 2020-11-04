@@ -21,6 +21,7 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import StorageIcon from "@material-ui/icons/Storage";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import CategoryIcon from "@material-ui/icons/Category";
+import SearchIcon from "@material-ui/icons/Search";
 
 import { useHistory } from "react-router-dom";
 
@@ -104,6 +105,10 @@ export default function PersistentDrawerLeft({ children }) {
 
   const ExtraOptions = [
     {
+      name: "Search",
+      icon: <SearchIcon />,
+    },
+    {
       name: "Knowledgebase info",
       icon: <StorageIcon />,
     },
@@ -177,23 +182,6 @@ export default function PersistentDrawerLeft({ children }) {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {["Cross Search", "Polyphenol Search", "Cancer Search"].map(
-            (name, index) => (
-              <ListItem
-                button
-                key={name}
-                onClick={() =>
-                  history.push(
-                    name === "Cross Search" ? "/" : name.split(" ").join("")
-                  )
-                }
-              >
-                <ListItemText primary={name} />
-              </ListItem>
-            )
-          )}
-        </List>
         <Divider />
         <List>
           {ExtraOptions.map(({ name, icon }, index) => (

@@ -58,8 +58,10 @@ export const columnsRule = [
     name: "Rule",
     width: "60%",
     cell: (row) => {
-      const { original_sentence } = row;
-      return <p>{original_sentence?.substring(0, 80) + "..."}</p>;
+      const { original_sentence, sentence } = row;
+      if (original_sentence !== "NA")
+        return <p>{original_sentence?.substring(0, 80) + "..."}</p>;
+      else return <p>{sentence?.substring(0, 80) + "..."}</p>;
     },
   },
   {
@@ -91,26 +93,26 @@ const HeaderDataTable = [
   {
     title: "P1",
     description:
-      "refere-se a regras sobre atividade anticancerígena reconhecidas nas sentenças do resumo contendo a(s) entidade(s) buscada(s).",
+      "Refers to rules on anticancer activity recognized in the sentences of the summary containing the entity (ies) sought.",
   },
   {
     title: "P2",
     description:
-      "refere-se a regras sobre a atividade de regulação de genes reconhecidas nas sentenças do resumo contendo a(s) entidade(s) buscada(s).",
+      "Refers to rules on the activity of regulating genes recognized in the sentences of the summary containing the entity (ies) sought.",
   },
   {
     title: "P3",
     description:
-      "frequência total de ocorrências da(s) entidade(s) buscada(s) no resumo.",
+      "Total frequency of occurrences of the entity (ies) sought in the summary.",
   },
   {
     title: "P4",
-    description: "média ponderada gerada a partir das pontuações P1, P2 e P3",
+    description: "Weighted average generated from the scores P1, P2 and P3.",
   },
   {
     title: "P5",
     description:
-      "medida resultante da classificação múltipla de textos, utilizando aprendizado de máquina supervisionado",
+      "Measure resulting from multiple text classification, using supervised machine learning.",
   },
 ];
 
@@ -132,7 +134,7 @@ export const columns = [
         {row.article.abstract_article?.substring(0, 120) + "..."}
       </div>
     ),
-    width: "45%",
+    width: "35%",
   },
   {
     name: "PMID",
@@ -140,6 +142,23 @@ export const columns = [
     sortable: true,
     width: "10%",
     center: true,
+    cell: (row) => (
+      <div
+        style={{
+          padding: 10,
+          borderRadius: 5,
+          background: "#3F3C56",
+        }}
+      >
+        <a
+          href={`https://pubmed.ncbi.nlm.nih.gov/${row.pmid}`}
+          style={{ fontWeight: "bold", textDecoration: "none", color: "white" }}
+          target="_blanck"
+        >
+          {row.pmid}
+        </a>
+      </div>
+    ),
   },
   {
     name: (
@@ -189,9 +208,22 @@ export const columns = [
     width: "10%",
     center: true,
   },
+  {
+    name: (
+      <Popover
+        title={HeaderDataTable[4].title}
+        description={HeaderDataTable[4].description}
+      />
+    ),
+    selector: "article.med",
+    sortable: true,
+    width: "10%",
+    center: true,
+  },
 ];
 
 export const customStyles = {
+  
   rows: {
     style: {
       minHeight: "72px", // override the row height

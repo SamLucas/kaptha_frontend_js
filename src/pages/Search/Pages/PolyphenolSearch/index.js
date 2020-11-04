@@ -10,7 +10,7 @@ import noData from "src/assets/svg/noData.svg";
 
 import InputAutoComplete from "src/components/InputAutoComplete";
 import Loading from "src/components/loading";
-import Header from "src/components/Header";
+
 import ExpandleComponent from "src/components/ExpandleComponent";
 
 import api from "src/config/api";
@@ -18,14 +18,12 @@ import { columns, customStyles } from "src/config/DataTableConfig";
 
 import SearchController from "src/controller/Search";
 
-export default function CancerSearch() {
+export default function PolyphenolSearch({ ative }) {
   const [dataResponse, setDataResponse] = useState([]);
-
-  const [dataSearchChemical, setDataSearchChemical] = useState("");
+  const [dataSearchPolyphenol, setDataSearchPolyphenol] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [noDataFound, setNoDataFound] = useState(false);
-
   const [totalregister, setTotalRegister] = useState(0);
 
   const [textSearch, setTextSearch] = useState([]);
@@ -35,13 +33,15 @@ export default function CancerSearch() {
     setNoDataFound(false);
 
     const { data } = await SearchController.search({
-      dataSearchChemical,
+      dataSearchPolyphenol,
     });
 
     if (data) {
-      const text = `${dataSearchChemical}.`;
+      const text = `${dataSearchPolyphenol}.`;
       setTextSearch(text);
     }
+
+    setDataSearchPolyphenol("")
 
     setTotalRegister(Array.isArray(data) ? data.length : 0);
     setDataResponse(Array.isArray(data) ? data : []);
@@ -49,13 +49,13 @@ export default function CancerSearch() {
     data.length === 0 && setNoDataFound(true);
   };
 
-  const [dataCompleteCancer, setDataCompleteCancer] = useState([]);
+  const [dataCompletePolyphenol, setDataCompletePolyphenol] = useState([]);
   const [loadingAutoComplete, setLoadingAutoComplete] = useState(false);
 
   useEffect(() => {
-    const data = { data: dataSearchChemical, name: "dataSearchChemical" };
+    const data = { data: dataSearchPolyphenol, name: "dataSearchPolyphenol" };
     debounceEvent(loadDataComplete, data, 2000);
-  }, [dataSearchChemical]);
+  }, [dataSearchPolyphenol]);
 
   const debounceEvent = (fn, params, wait = 1000, time) => {
     clearTimeout(
@@ -72,25 +72,19 @@ export default function CancerSearch() {
       .get("/searchTerms", {
         params: {
           name: data,
-          type: "cancer",
+          type: "polifenol",
         },
       })
       .then(({ data }) => data);
-    setDataCompleteCancer(response);
+
+    setDataCompletePolyphenol(response);
     setLoadingAutoComplete(false);
   };
 
   const TotalRegisterAcount = () => {
-    switch (totalregister) {
-      case totalregister === 1:
-        return `${totalregister} record found.`;
-      case totalregister < 1:
-        return "No record found.";
-      case totalregister > 1:
-        return `${totalregister} records found.`;
-      default:
-        return "";
-    }
+    if (totalregister === 1) return `${totalregister} record found.`;
+    else if (totalregister < 1) return "No record found.";
+    else if (totalregister > 1) return `${totalregister} records found.`;
   };
 
   const SwitchVisibleContent = () => {
@@ -101,7 +95,7 @@ export default function CancerSearch() {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Search terms: {textSearch}</p>
+            <p>Termos pesquisados: {textSearch}</p>
           </div>
 
           <DataTable
@@ -112,12 +106,12 @@ export default function CancerSearch() {
             noHeader={true}
             customStyles={customStyles}
             pagination={true}
-            paginationRowsPerPageOptions={[20, 30, 40]}
+            paginationRowsPerPageOptions={[100, 50, 40, 30, 20]}
             paginationPerPage={100}
           />
         </section>
       );
-    } else if (dataResponse.length === 0 && dataSearchChemical === "") {
+    } else if (dataResponse.length === 0 && dataSearchPolyphenol === "") {
       return (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />
@@ -127,40 +121,40 @@ export default function CancerSearch() {
     }
   };
 
+  if (!ative) return <></>;
+
   return (
-    <Header>
-      <Container>
-        <header>
-          <InputAutoComplete
-            disabled={loading}
-            options={dataCompleteCancer}
-            loading={loadingAutoComplete}
-            setData={setDataSearchChemical}
-            data={dataSearchChemical}
-            label="Enter with chemical..."
-          />
+    <Container>
+      <header>
+        <InputAutoComplete
+          disabled={loading}
+          options={dataCompletePolyphenol}
+          loading={loadingAutoComplete}
+          setData={setDataSearchPolyphenol}
+          data={dataSearchPolyphenol}
+          label="Enter with polyphenol..."
+        />
 
-          <div>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleSearch}
-              disabled={loading || dataSearchChemical === ""}
-            >
-              Search
-            </Button>
-          </div>
-        </header>
+        <div>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleSearch}
+            disabled={loading || dataSearchPolyphenol === ""}
+          >
+            Search
+          </Button>
+        </div>
+      </header>
 
-        {SwitchVisibleContent()}
+      {SwitchVisibleContent()}
 
-        {noDataFound && (
-          <section className="containerInformationSearch">
-            <img className="img" src={noData} alt="" />
-            <p>No results found.</p>
-          </section>
-        )}
-      </Container>
-    </Header>
+      {noDataFound && (
+        <section className="containerInformationSearch">
+          <img className="img" src={noData} alt="" />
+          <p>No results found.</p>
+        </section>
+      )}
+    </Container>
   );
 }

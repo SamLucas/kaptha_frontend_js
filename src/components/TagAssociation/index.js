@@ -13,7 +13,7 @@ export function TagAssociation(ruleAssociationsExtracted) {
         {SearchController.getTypesAssociation(ruleAssociationsExtracted).map(
           (ele, index) => (
             <div key={index} className="contentTypeAssociation">
-              <TagColor color={ele.color} />
+              <TagColor underline color={ele.color} />
               <p>{ele.description}</p>
             </div>
           )
@@ -25,25 +25,33 @@ export function TagAssociation(ruleAssociationsExtracted) {
 
 export function TagAssociationRules(rule) {
   let Types = [];
+
   rule.forEach((element) => {
     element.entitiesRules.forEach((rule) => {
       Types = [...new Set([...Types, rule.entity_type])];
     });
   });
 
+  let ColorsType = [...new Set(Types.map(ele => ColorAssociation[ele].description))]
+
+  const colors = {
+    Polifenol: "#33BBAF",
+    Cancer: "#FFAB40",
+    Gene: "#133B96",
+    "Polifenol and Cancer": "#B2B2B2",
+    "Polifenol and Gene": "#F67652"
+  }
+
   return (
     <Container>
       <p className="title">Entites found</p>
       <div className="DescriptionTypesAssociations">
-        {Types.map((ele, index) => {
-          const { color, description } = ColorAssociation[ele];
-          return (
-            <div key={index} className="contentTypeAssociation">
-              <TagColor color={color} />
-              <p>{description}</p>
-            </div>
-          );
-        })}
+        {ColorsType.map((ele, index) => (
+          <div key={index} className="contentTypeAssociation">
+            <TagColor color={colors[ele]} />
+            <p>{ele}</p>
+          </div>
+        ))}
       </div>
     </Container>
   );

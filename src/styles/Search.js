@@ -77,12 +77,16 @@ export const Container = styled.div`
       background-color: white;
       border-radius: 5px;
       margin-bottom: 10px;
-      width: 100%;
+      width: 90vw;
+
+      /* text-align: justify; */
+
 
       h1 {
         font-weight: bold;
         margin: 5px 0px;
         padding: 10px 0px;
+        position: relative;
       }
 
       .ReactCollapse--collapse {
@@ -96,6 +100,9 @@ export const Container = styled.div`
       p#colapseTrue {
         padding: -20px;
         line-height: 24px;
+
+        /* display: flex;
+        flex-direction: row; */
       }
 
       p#colapseFalse {
