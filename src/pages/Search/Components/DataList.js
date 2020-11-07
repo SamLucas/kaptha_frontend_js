@@ -17,7 +17,7 @@ function DataList({
 
     let _dataSearchPolyphenol = typeTerm === "polifenol" ? termIdentificator : dataSearchPolyphenol
     let _dataSearchChemical = typeTerm === "cancer" ? termIdentificator : dataSearchChemical
-    console.log('>>>>>>>>>>>>>>', typeTerm)
+
     handleSearch(_dataSearchPolyphenol, _dataSearchChemical)
 
     setDataList([])

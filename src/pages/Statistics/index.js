@@ -50,6 +50,8 @@ export default function Statistics() {
     }
   }, [entitieSelected]);
 
+
+
   return (
     <Header>
       <InputAutoComplete
@@ -62,10 +64,17 @@ export default function Statistics() {
         width="100%"
       />
 
-      <GraphicInfo relatedEntities={relatedEntities} />
+      <GraphicInfo relatedEntities={
+        relatedEntities.sort(
+          (a, b) => parseInt(a.quant) - parseInt(b.quant)
+        )} />
+
       <TableInfo
-        relatedEntities={relatedEntities}
         entitieSelected={entitieSelected}
+        relatedEntities={
+          relatedEntities.sort(
+            (a, b) => parseInt(b.quant) - parseInt(a.quant)
+          )}
       />
 
       {loading && <Loading />}

@@ -93,17 +93,17 @@ const HeaderDataTable = [
   {
     title: "P1",
     description:
-      "Refers to rules on anticancer activity recognized in the sentences of the summary containing the entity (ies) sought.",
+      "Refers to rules on anticancer activity recognized in the sentences of the abstract containing the entity (ies) sought.",
   },
   {
     title: "P2",
     description:
-      "Refers to rules on the activity of regulating genes recognized in the sentences of the summary containing the entity (ies) sought.",
+      "Refers to rules on the activity of regulating genes recognized in the sentences of the abstract containing the entity (ies) sought.",
   },
   {
     title: "P3",
     description:
-      "Total frequency of occurrences of the entity (ies) sought in the summary.",
+      "Total frequency of occurrences of the entity (ies) sought in the abstract.",
   },
   {
     title: "P4",
@@ -223,7 +223,7 @@ export const columns = [
 ];
 
 export const customStyles = {
-  
+
   rows: {
     style: {
       minHeight: "72px", // override the row height
