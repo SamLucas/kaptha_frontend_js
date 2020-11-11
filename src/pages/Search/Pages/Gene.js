@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import api from "src/config/api";
 
 import { Container } from "src/styles/Search";
+import { columns, customStyles } from "src/config/DataTableConfig";
 
 import DataTable from "react-data-table-component";
 import Button from "@material-ui/core/Button";
@@ -8,40 +10,37 @@ import Button from "@material-ui/core/Button";
 import Searching from "src/assets/svg/searching.svg";
 import noData from "src/assets/svg/noData.svg";
 
+import ExpandleComponent from "src/components/ExpandleComponent";
 import InputAutoComplete from "src/components/InputAutoComplete";
 import Loading from "src/components/loading";
-
-import ExpandleComponent from "src/components/ExpandleComponent";
-
-import api from "src/config/api";
-import { columns, customStyles } from "src/config/DataTableConfig";
-
 import SearchController from "src/controller/Search";
 
-export default function PolyphenolSearch({ ative }) {
+const TYPE_PAGE = "Gene"
+
+
+
+export default function GeneSearch({ ative }) {
   const [dataResponse, setDataResponse] = useState([]);
-  const [dataSearchPolyphenol, setDataSearchPolyphenol] = useState("");
+  const [dataSearch, setDataSearch] = useState("");
+  const [totalregister, setTotalRegister] = useState(0);
+  const [textSearch, setTextSearch] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [noDataFound, setNoDataFound] = useState(false);
-  const [totalregister, setTotalRegister] = useState(0);
-
-  const [textSearch, setTextSearch] = useState([]);
+  const [dataInput, setDataInput] = useState("");
 
   const handleSearch = async (numberPage = 1) => {
     setLoading(true);
     setNoDataFound(false);
 
     const { data } = await SearchController.search({
-      dataSearchPolyphenol,
+      dataSearch,
+      TYPE_PAGE
     });
 
-    if (data) {
-      const text = `${dataSearchPolyphenol}.`;
-      setTextSearch(text);
-    }
-
-    setDataSearchPolyphenol("")
+    console.log(JSON.stringify(data))
+    if (data) setTextSearch(dataSearch);
+    setDataSearch("")
 
     setTotalRegister(Array.isArray(data) ? data.length : 0);
     setDataResponse(Array.isArray(data) ? data : []);
@@ -49,13 +48,17 @@ export default function PolyphenolSearch({ ative }) {
     data.length === 0 && setNoDataFound(true);
   };
 
-  const [dataCompletePolyphenol, setDataCompletePolyphenol] = useState([]);
+  const [dataComplete, setDataComplete] = useState([]);
   const [loadingAutoComplete, setLoadingAutoComplete] = useState(false);
 
   useEffect(() => {
-    const data = { data: dataSearchPolyphenol, name: "dataSearchPolyphenol" };
-    debounceEvent(loadDataComplete, data, 2000);
-  }, [dataSearchPolyphenol]);
+    const data = { data: dataInput, name: "dataSearch" };
+
+    dataInput !== "" ?
+      debounceEvent(loadDataComplete, data, 2000) :
+      loadDataComplete(data)
+
+  }, [dataInput]);
 
   const debounceEvent = (fn, params, wait = 1000, time) => {
     clearTimeout(
@@ -72,12 +75,11 @@ export default function PolyphenolSearch({ ative }) {
       .get("/searchTerms", {
         params: {
           name: data,
-          type: "polifenol",
+          type: TYPE_PAGE,
         },
       })
       .then(({ data }) => data);
-
-    setDataCompletePolyphenol(response);
+    setDataComplete(response);
     setLoadingAutoComplete(false);
   };
 
@@ -95,7 +97,7 @@ export default function PolyphenolSearch({ ative }) {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Termos pesquisados: {textSearch}</p>
+            <p>Searched {TYPE_PAGE}: {textSearch}.</p>
           </div>
 
           <DataTable
@@ -111,7 +113,7 @@ export default function PolyphenolSearch({ ative }) {
           />
         </section>
       );
-    } else if (dataResponse.length === 0 && dataSearchPolyphenol === "") {
+    } else if (dataResponse.length === 0 && dataSearch === "") {
       return (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />
@@ -128,11 +130,12 @@ export default function PolyphenolSearch({ ative }) {
       <header>
         <InputAutoComplete
           disabled={loading}
-          options={dataCompletePolyphenol}
+          options={dataComplete}
           loading={loadingAutoComplete}
-          setData={setDataSearchPolyphenol}
-          data={dataSearchPolyphenol}
-          label="Enter with polyphenol..."
+          setData={setDataSearch}
+          data={dataSearch}
+          label={`Enter with ${TYPE_PAGE}...`}
+          setDataInput={setDataInput}
         />
 
         <div>
@@ -140,7 +143,7 @@ export default function PolyphenolSearch({ ative }) {
             variant="outlined"
             color="primary"
             onClick={handleSearch}
-            disabled={loading || dataSearchPolyphenol === ""}
+            disabled={loading || dataSearch === ""}
           >
             Search
           </Button>

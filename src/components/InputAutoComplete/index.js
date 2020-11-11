@@ -10,6 +10,7 @@ const InputAutoComplete = ({
   data,
   label,
   width = "30%",
+  setDataInput = () => { }
 }) => {
   return (
     <Autocomplete
@@ -18,7 +19,6 @@ const InputAutoComplete = ({
       loading={loading}
       options={options}
       getOptionLabel={(option) => option.label}
-
       style={{
         width: width,
         margin: "auto 0",
@@ -35,6 +35,7 @@ const InputAutoComplete = ({
             value={data}
             variant="outlined"
             disabled={true}
+            onChange={e => setDataInput(e.target.value)}
           />
         );
       }}

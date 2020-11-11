@@ -6,11 +6,18 @@ import { ColorAssociation } from "src/config/colors";
 import { Container, TagColor } from "./styles";
 
 export function TagAssociation(ruleAssociationsExtracted) {
+
+  const data = SearchController.getTypesAssociation(ruleAssociationsExtracted)
+
+  console.log(ruleAssociationsExtracted)
+
+  if (data.length === 0) return <></>
+
   return (
     <Container>
       <p className="title">Phrase ratings</p>
       <div className="DescriptionTypesAssociations">
-        {SearchController.getTypesAssociation(ruleAssociationsExtracted).map(
+        {data.map(
           (ele, index) => (
             <div key={index} className="contentTypeAssociation">
               <TagColor underline color={ele.color} />
@@ -41,6 +48,8 @@ export function TagAssociationRules(rule) {
     "Polifenol and Cancer": "#B2B2B2",
     "Polifenol and Gene": "#F67652"
   }
+
+  if (ColorsType.length === 0) return <></>
 
   return (
     <Container>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import api from "src/config/api";
 
 import { Container } from "src/styles/Search";
+import { columns, customStyles } from "src/config/DataTableConfig";
 
 import DataTable from "react-data-table-component";
 import Button from "@material-ui/core/Button";
@@ -8,42 +10,34 @@ import Button from "@material-ui/core/Button";
 import Searching from "src/assets/svg/searching.svg";
 import noData from "src/assets/svg/noData.svg";
 
+import ExpandleComponent from "src/components/ExpandleComponent";
 import InputAutoComplete from "src/components/InputAutoComplete";
 import Loading from "src/components/loading";
-
-import ExpandleComponent from "src/components/ExpandleComponent";
-
-import api from "src/config/api";
-import { columns, customStyles } from "src/config/DataTableConfig";
-
 import SearchController from "src/controller/Search";
 
-export default function CancerSearch({ ative }) {
-  const [dataResponse, setDataResponse] = useState([]);
+const TYPE_PAGE = "Polifenol"
 
-  const [dataSearchChemical, setDataSearchChemical] = useState("");
+export default function GeneSearch({ ative }) {
+  const [dataResponse, setDataResponse] = useState([]);
+  const [dataSearch, setDataSearch] = useState("");
+  const [totalregister, setTotalRegister] = useState(0);
+  const [textSearch, setTextSearch] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [noDataFound, setNoDataFound] = useState(false);
-
-  const [totalregister, setTotalRegister] = useState(0);
-
-  const [textSearch, setTextSearch] = useState([]);
+  const [dataInput, setDataInput] = useState("");
 
   const handleSearch = async (numberPage = 1) => {
     setLoading(true);
     setNoDataFound(false);
 
     const { data } = await SearchController.search({
-      dataSearchChemical,
+      dataSearch,
+      TYPE_PAGE
     });
 
-    if (data) {
-      const text = `${dataSearchChemical}.`;
-      setTextSearch(text);
-    }
-
-    setDataSearchChemical("")
+    if (data) setTextSearch(dataSearch);
+    setDataSearch("")
 
     setTotalRegister(Array.isArray(data) ? data.length : 0);
     setDataResponse(Array.isArray(data) ? data : []);
@@ -51,15 +45,17 @@ export default function CancerSearch({ ative }) {
     data.length === 0 && setNoDataFound(true);
   };
 
-  const [dataCompleteCancer, setDataCompleteCancer] = useState([]);
+  const [dataComplete, setDataComplete] = useState([]);
   const [loadingAutoComplete, setLoadingAutoComplete] = useState(false);
 
   useEffect(() => {
-    const data = { data: dataSearchChemical, name: "dataSearchChemical" };
+    const data = { data: dataInput, name: "dataSearch" };
 
-    console.log(dataSearchChemical)
-    dataSearchChemical !== "" ? debounceEvent(loadDataComplete, data, 2000) : loadDataComplete(data)
-  }, [dataSearchChemical]);
+    dataInput !== "" ?
+      debounceEvent(loadDataComplete, data, 2000) :
+      loadDataComplete(data)
+
+  }, [dataInput]);
 
   const debounceEvent = (fn, params, wait = 1000, time) => {
     clearTimeout(
@@ -76,11 +72,11 @@ export default function CancerSearch({ ative }) {
       .get("/searchTerms", {
         params: {
           name: data,
-          type: "cancer",
+          type: TYPE_PAGE,
         },
       })
       .then(({ data }) => data);
-    setDataCompleteCancer(response);
+    setDataComplete(response);
     setLoadingAutoComplete(false);
   };
 
@@ -98,7 +94,7 @@ export default function CancerSearch({ ative }) {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Search terms: {textSearch}</p>
+            <p>Searched {TYPE_PAGE}: {textSearch}.</p>
           </div>
 
           <DataTable
@@ -114,7 +110,7 @@ export default function CancerSearch({ ative }) {
           />
         </section>
       );
-    } else if (dataResponse.length === 0 && dataSearchChemical === "") {
+    } else if (dataResponse.length === 0 && dataSearch === "") {
       return (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />
@@ -131,11 +127,12 @@ export default function CancerSearch({ ative }) {
       <header>
         <InputAutoComplete
           disabled={loading}
-          options={dataCompleteCancer}
+          options={dataComplete}
           loading={loadingAutoComplete}
-          setData={setDataSearchChemical}
-          data={dataSearchChemical}
-          label="Enter with chemical..."
+          setData={setDataSearch}
+          data={dataSearch}
+          label={`Enter with ${TYPE_PAGE}...`}
+          setDataInput={setDataInput}
         />
 
         <div>
@@ -143,7 +140,7 @@ export default function CancerSearch({ ative }) {
             variant="outlined"
             color="primary"
             onClick={handleSearch}
-            disabled={loading || dataSearchChemical === ""}
+            disabled={loading || dataSearch === ""}
           >
             Search
           </Button>

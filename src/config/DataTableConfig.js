@@ -44,11 +44,11 @@ export const ColorAssociation = {
     color: "#33BBAF",
   },
   gene_entity: {
-    description: "Cancer",
+    description: "Gene",
     color: "#133B96",
   },
   gene_hgnc_entity: {
-    description: "Cancer",
+    description: "Gene",
     color: "#133B96",
   },
 };
@@ -129,9 +129,9 @@ export const columns = [
             paddingBottom: "4px",
           }}
         >
-          {row.article.title_article?.substring(0, 120) + "..."}
+          {row.article?.title_article?.substring(0, 120) + "..."}
         </div>
-        {row.article.abstract_article?.substring(0, 120) + "..."}
+        {row.article?.abstract_article?.substring(0, 120) + "..."}
       </div>
     ),
     width: "35%",

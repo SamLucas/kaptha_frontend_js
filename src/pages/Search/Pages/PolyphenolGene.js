@@ -22,6 +22,9 @@ import PageDataError from "src/components/PageDataError";
 import { Result } from "src/data/moocks";
 
 import DataList from 'src/pages/Search/Components/DataList'
+import { debounceEvent } from 'src/Utils/index'
+
+const TYPE_PAGE = "PolifenolGene"
 
 export default function CrossSearch({ ative, dataSearch }) {
   const [dataResponse, setDataResponse] = useState([]);
@@ -34,7 +37,7 @@ export default function CrossSearch({ ative, dataSearch }) {
   const [errorDataSearch, setError] = useState(false);
   const [noDataFound, setNoDataFound] = useState(false);
   const [totalregister, setTotalRegister] = useState(0);
-  const [textSearch, setTextSearch] = useState([]);
+  const [textSearch, setTextSearch] = useState();
 
   const handleSearch = async (
     polifenol = dataSearchPolyphenol,
@@ -45,15 +48,18 @@ export default function CrossSearch({ ative, dataSearch }) {
     setError(false);
 
     const response = await SearchController.search({
-      dataSearchPolyphenol: polifenol,
-      dataSearchChemical: cancer,
+      dataSearchp: polifenol,
+      dataSearchg: cancer,
+      TYPE_PAGE
     });
 
     if (response && response.data) {
       const { data } = response;
-      const text = `${polifenol}${cancer !== "" && polifenol !== "" && ", "
-        }${cancer}.`;
-      setTextSearch(text);
+
+      setTextSearch({
+        p: polifenol,
+        g: cancer
+      });
 
       setTotalRegister(Array.isArray(data) ? data.length : 0);
       setDataResponse(Array.isArray(data) ? data : []);
@@ -73,38 +79,40 @@ export default function CrossSearch({ ative, dataSearch }) {
 
   const [dataCompletePolyphenol, setDataCompletePolyphenol] = useState([]);
   const [dataCompleteCancer, setDataCompleteCancer] = useState([]);
+
   const [loadingAutoCompleteP, setLoadingAutoCompleteP] = useState(false);
   const [loadingAutoCompleteC, setLoadingAutoCompleteC] = useState(false);
 
+  const [inputSearchA, setInputSearchA] = useState("");
+  const [inputSearchB, setInputSearchB] = useState("");
 
   useEffect(() => {
-    const data = { data: dataSearchPolyphenol, name: "dataCompletePolyphenol" };
-    debounceEvent(loadDataComplete, data, 2000)
-  }, [dataSearchPolyphenol]);
+    const data = { data: inputSearchA, name: "dataCompletePolyphenol" };
+
+    inputSearchA === "" ?
+      loadDataComplete(data) :
+      debounceEvent(loadDataComplete, data, 2000)
+
+  }, [inputSearchA]);
 
   useEffect(() => {
-    const data = { data: dataSearchChemical, name: "dataSearchChemical" };
-    debounceEvent(loadDataComplete, data, 2000)
-  }, [dataSearchChemical]);
+    const data = { data: inputSearchB, name: "dataSearchChemical" };
 
-  const debounceEvent = (fn, params, wait = 1000, time) => {
-    clearTimeout(
-      time,
-      (time = setTimeout(() => {
-        fn(params);
-      }, wait))
-    );
-  };
+    inputSearchB === "" ?
+      loadDataComplete(data) :
+      debounceEvent(loadDataComplete, data, 2000)
+
+  }, [inputSearchB]);
 
   const loadDataComplete = async ({ data, name }) => {
-    setLoadingAutoCompleteP(true);
-    setLoadingAutoCompleteC(true);
+    name === "dataCompletePolyphenol" && setLoadingAutoCompleteP(true);
+    name !== "dataCompletePolyphenol" && setLoadingAutoCompleteC(true);
 
     const response = await api
       .get("/searchTerms", {
         params: {
           name: data,
-          type: name === "dataCompletePolyphenol" ? "polifenol" : "cancer",
+          type: name === "dataCompletePolyphenol" ? "polifenol" : "gene",
         },
       })
       .then(({ data }) => data);
@@ -113,21 +121,9 @@ export default function CrossSearch({ ative, dataSearch }) {
       ? setDataCompletePolyphenol(response)
       : setDataCompleteCancer(response);
 
-    setLoadingAutoCompleteP(false);
-    setLoadingAutoCompleteC(false);
+    name === "dataCompletePolyphenol" && setLoadingAutoCompleteP(false);
+    name !== "dataCompletePolyphenol" && setLoadingAutoCompleteC(false);
   };
-
-
-  // const resetInputComplete = () => {
-  //   const listCancer = CrossSearchController.listCancer();
-  //   const listPolifenols = CrossSearchController.listPolifenols();
-
-  //   setDataSearchPolyphenol("");
-  //   setDataSearchChemical("");
-
-  //   setDataCompleteCancer(listCancer);
-  //   setDataCompletePolyphenol(listPolifenols);
-  // };
 
   useEffect(() => {
     if (typeof dataSearch === "object") {
@@ -135,22 +131,6 @@ export default function CrossSearch({ ative, dataSearch }) {
       handleSearch(polifenol, cancer);
     }
   }, [dataSearch]);
-
-  useLayoutEffect(() => {
-    let isReady = true;
-    if (isReady) {
-      setLoadingAutoCompleteP(true);
-      setLoadingAutoCompleteC(true);
-      setLoading(true);
-
-      // resetInputComplete();
-
-      setLoading(false);
-      setLoadingAutoCompleteP(false);
-      setLoadingAutoCompleteC(false);
-    }
-    return () => (isReady = false);
-  }, []);
 
   useEffect(() => {
     let isReady = true;
@@ -190,7 +170,7 @@ export default function CrossSearch({ ative, dataSearch }) {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Termos pesquisados: {textSearch}</p>
+            <p>surveyed polyphenol and cancer researched: {textSearch.p}, {textSearch.c}.</p>
           </div>
 
           <DataTable
@@ -233,6 +213,7 @@ export default function CrossSearch({ ative, dataSearch }) {
           loading={loadingAutoCompleteP}
           setData={setDataSearchPolyphenol}
           data={dataSearchPolyphenol}
+          setDataInput={setInputSearchA}
           label="Enter with polyphenol..."
         />
 
@@ -242,7 +223,8 @@ export default function CrossSearch({ ative, dataSearch }) {
           loading={loadingAutoCompleteC}
           setData={setDataSearchChemical}
           data={dataSearchChemical}
-          label="Enter with chemical..."
+          setDataInput={setInputSearchB}
+          label="Enter with gene..."
         />
 
         <div>
@@ -261,15 +243,17 @@ export default function CrossSearch({ ative, dataSearch }) {
         </div>
       </header>
 
-      {dataList.length > 0 ?
+      {/* {dataList.length > 0 ?
         <DataList
           data={dataList}
           handleSearch={handleSearch}
           dataSearchPolyphenol={dataSearchPolyphenol}
           dataSearchChemical={dataSearchChemical}
           setDataList={setDataList} />
-        : SwitchVisibleContent()
-      }
+        : 
+      } */}
+
+      {SwitchVisibleContent()}
 
       {noDataFound && (
         <section className="containerInformationSearch">

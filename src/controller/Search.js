@@ -1,20 +1,51 @@
 import React from 'react'
 import api from "src/config/api";
+
+import { makeid } from 'src/Utils/index'
 import { ColorAssociation } from "src/config/colors";
 
 import PopoverEntites from 'src/components/PopoverEntities'
 
 function Search() {
 
-  const search = (params) =>
-    api
-      .get("/search", {
-        params,
-      })
+  const preparData = (params) => {
+    const { TYPE_PAGE } = params
+    let newParams = {};
+
+    if (TYPE_PAGE === "Gene") newParams = { dataSearchGene: params.dataSearch }
+    else if (TYPE_PAGE === "Polifenol")
+      newParams = {
+        dataSearchPolyphenol: params.dataSearch
+      }
+    else if (TYPE_PAGE === "Cancer")
+      newParams = {
+        dataSearchChemical: params.dataSearch
+      }
+    else if (TYPE_PAGE === "PolifenolCancer")
+      newParams = {
+        dataSearchPolyphenol: params.dataSearchp,
+        dataSearchChemical: params.dataSearchc
+      }
+    else if (TYPE_PAGE === "PolifenolGene")
+      newParams = {
+        dataSearchGene: params.dataSearchg,
+        dataSearchPolyphenol: params.dataSearchp
+      }
+
+    return newParams
+  }
+
+  const search = (params) => {
+    const newParams = preparData(params)
+    return api.get("/search", {
+      params: newParams
+    })
       .then((res) => res)
       .catch((error) => null);
+  }
 
   const handleFindPhrase = (text, frase) => {
+
     frase.forEach((element) => {
       const { original_sentence, association_type } = element;
       const colorPhare = ColorAssociation[association_type].color;
@@ -22,8 +53,7 @@ function Search() {
       const TextPhrases = handleFindEntitiesPharase(
         original_sentence,
         element.start_pos,
-        element.end_pos,
-        element.entitiesRules,
+        element.entitiesRules
       );
 
       text = text
@@ -39,49 +69,56 @@ function Search() {
   const handleFindEntitiesPharase = (
     text,
     start_pos,
-    end_pos,
     entitiesRules,
   ) => {
 
-    const textAux = text;
     const words = []
+    const dataWords = {}
 
     entitiesRules.map(ele => {
 
-      let startReplaceStr = 0;
-      let endReplaceStr = 0;
+      // if (textAux.length >= start_pos && end_pos - 1 <= textAux.length) {
+      //   startReplaceStr = ele.start_pos === 1 ? 0 : ele.start_pos
+      //   endReplaceStr = ele.end_pos
+      //   word = textAux.slice(startReplaceStr, endReplaceStr)
+      // }
 
-      if (start_pos >= textAux.length + 1 && end_pos >= textAux.length + 1) {
-
-        const diff = end_pos - textAux.length
-        startReplaceStr = Math.abs(diff - ele.start_pos)
-        endReplaceStr = Math.abs(diff - ele.end_pos)
-      } else {
-        startReplaceStr = ele.start_pos
-        endReplaceStr = ele.end_pos
-      }
-
-      const word = textAux.slice(startReplaceStr, endReplaceStr)
       const colorPhare = ColorAssociation[ele.entity_type].color;
 
-      if (word) words.push({ word, colorPhare, element: ele })
+      const wordLength = ele.end_pos - ele.start_pos
+      let distInitialPhareToWord = Math.abs(start_pos - ele.start_pos)
+
+      const very = text.slice(
+        distInitialPhareToWord,
+        distInitialPhareToWord + wordLength
+      )
+
+      if (very[0] === " ") distInitialPhareToWord = distInitialPhareToWord + 1
+
+      const partOne = text.substr(0, distInitialPhareToWord)
+      const partTwo = text.substr(distInitialPhareToWord + wordLength)
+      const word = text.slice(
+        distInitialPhareToWord,
+        distInitialPhareToWord + wordLength
+      )
+
+      let newWord = makeid(word.length);
+
+      while (!words.filter(ele => ele === newWord)) {
+        newWord = makeid(word.length)
+      }
+
+      words.push(newWord)
+      dataWords[newWord] = { word, colorPhare, element: ele }
+      text = partOne + newWord + partTwo
     })
 
-    const notRepeat = [...new Set([...words.map(ele => ele.word)])].sort((a, b) => {
-      if (a.length < b.length) return -1;
-      if (a.length > b.length) return 1;
-      return 0
+    words.forEach(word => {
+      const data = dataWords[word]
+      text = text
+        .split(word)
+        .join(`<spanbackground>${data.word}*|*${data.colorPhare}*|*${JSON.stringify(data.element)}</spanbackground>`);
     })
-
-    notRepeat.forEach(word => {
-      const [data] = words.filter(ele => ele.word === word)
-      if (data)
-        text = text
-          .split(word.trim())
-          .join(`<spanbackground>${word}*|*${data.colorPhare}*|*${JSON.stringify(data.element)}</spanbackground>`);
-    })
-
-    // console.log(text)
 
     return text;
   };
@@ -105,9 +142,10 @@ function Search() {
         const [term, color, data] = ele.split('*|*')
         return (
           <PopoverEntites
-            key={`${JSON.stringify(ele)}${index}`}
+            key={`${ele}${index}`}
+            data={JSON.parse(data)}
             color={color}
-            data={data}>
+          >
             {term}
           </PopoverEntites>
         )
@@ -116,30 +154,32 @@ function Search() {
 
   }
 
-  const joinTextElementPharase = (txt, title = false) => {
+  const joinTextElementPharase = (txt) => {
 
     const textSeparate = []
     const words = txt.split(/<spanLine>(.*?)<\/spanLine>/g)
 
-    txt.replace(/<spanLine>(.*?)<\/spanLine>/g, (match, g1) => textSeparate.push(g1))
+    txt.replace(
+      /<spanLine>(.*?)<\/spanLine>/g,
+      (match, g1) => textSeparate.push(g1)
+    )
+
+    // console.log(textSeparate, words)
 
     return words.map((ele, index) => {
       if (textSeparate.find(t => t === ele)) {
         const [phrase, color] = ele.split("=|=")
-        return title ?
-          <h3
-            key={`${JSON.stringify(ele)}${index}`}
-            style={{ textDecoration: `underline ${color}`, color }}>
-            {joinTextElementPopover(phrase)}
-          </h3> :
+        return (
           <span
             key={`${JSON.stringify(ele)}${index}`}
             style={{ textDecoration: `underline ${color}`, color }}>
             {joinTextElementPopover(phrase)}
+            {/* {phrase} */}
           </span>
+        )
       }
 
-      return <span>{ele}</span>
+      return <span key={`${JSON.stringify(ele)}${index}`}>{ele}</span>
     })
   }
 

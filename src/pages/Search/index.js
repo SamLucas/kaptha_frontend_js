@@ -6,9 +6,11 @@ import Tab from "@material-ui/core/Tab";
 
 import Header from "src/components/Header";
 
-import Cross from "src/pages/Search/Pages/CrossSearch";
-import Cancer from "src/pages/Search/Pages/CancerSearch";
-import Polyphenol from "src/pages/Search/Pages/PolyphenolSearch";
+import PolyphenolGene from "src/pages/Search/Pages/PolyphenolGene";
+import PolyphenolCancer from "src/pages/Search/Pages/PolyphenolCancer";
+import Cancer from "src/pages/Search/Pages/Cancer";
+import Polyphenol from "src/pages/Search/Pages/Polyphenol";
+import Gene from "src/pages/Search/Pages/Gene";
 
 import { useParams } from "react-router-dom";
 
@@ -31,6 +33,14 @@ export default function CenteredTabs() {
 
   return (
     <Header>
+
+      <h1>Search</h1>
+      <p style={{
+        marginBottom: 20
+      }}>
+        Select a search type and then select the entities to perform the search.
+      </p>
+
       <Paper className={classes.root}>
         <Tabs
           value={value}
@@ -39,17 +49,24 @@ export default function CenteredTabs() {
           textColor="primary"
           centered
         >
-          <Tab label="Cross" />
-          <Tab label="Polyphenol" />
+          <Tab label="Polyphenol - Cancer" />
           <Tab label="Cancer" />
+          <Tab label="Polyphenol" />
+          <Tab label="Gene" />
+          <Tab label="Polyphenol - Gene" />
         </Tabs>
       </Paper>
 
-      <Polyphenol ative={value === 1} />
-      <Cancer ative={value === 2} />
-      <Cross
+      <PolyphenolCancer
         ative={value === 0}
         dataSearch={params && params.cancer && params.polifenol && params}
+      />
+      <Cancer ative={value === 1} />
+      <Polyphenol ative={value === 2} />
+      <Gene ative={value === 3} />
+      <PolyphenolGene
+        ative={value === 4}
+        dataSearch={params && params.gene && params.polifenol && params}
       />
     </Header>
   );

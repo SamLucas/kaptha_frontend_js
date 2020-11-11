@@ -15,8 +15,9 @@ const ExpandleComponent = ({ data }) => {
   const TextMarkerAbstrac = SearchController.handleFindPhrase(
     article.abstract_article,
     rule,
-
+    article.title_article.length
   )
+
   const TextMarkerTitle = SearchController.handleFindPhrase(
     article.title_article,
     rule,
@@ -26,7 +27,9 @@ const ExpandleComponent = ({ data }) => {
     <div key={JSON.stringify(data)} className="cardContainer">
       <h1>{SearchController.joinTextElementPharase(TextMarkerTitle, true)}</h1>
       <p id="colapseTrue">
-        {SearchController.joinTextElementPharase(TextMarkerAbstrac)}
+        {SearchController.joinTextElementPharase(
+          TextMarkerAbstrac
+        )}
       </p>
 
       {TagAssociation(rule)}
