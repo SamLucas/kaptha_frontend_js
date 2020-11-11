@@ -89,10 +89,12 @@ export default function MouseOverPopover({ data, color, children }) {
             {data.db_term} -  {ColorAssociation[data.entity_type].description}
           </p>
 
-          <div style={{ marginTop: 20, marginBottom: 20 }}>
+
+          {dataEntitie.term_definition && dataEntitie.term_definition !== "null" && <div style={{ marginTop: 20, marginBottom: 20 }}>
             {dataEntitie.term_description && <p>{dataEntitie.term_description}</p>}
             {dataEntitie.term_definition && <p>{dataEntitie.term_definition}</p>}
-          </div>
+          </div>}
+
           {dataEntitie.DrugBankID &&
             <a
               href={`https://go.drugbank.com/drugs/${dataEntitie.DrugBankID}`}

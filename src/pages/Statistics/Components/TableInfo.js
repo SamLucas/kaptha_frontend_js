@@ -46,6 +46,7 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
   const [dataSearch, setDataSearch] = useState([])
   const [inputSearch, setInputSearch] = useState("")
   const [searchLoading, setSearchLoading] = useState(false)
+  const [resultNotFound, setResultNotFound] = useState(false)
 
   const handleCrossSearch = (entite) => {
     const { typeTerm, termIdentificator } = entite;
@@ -60,6 +61,7 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
 
   const filterData = () => {
     setSearchLoading(true)
+    setResultNotFound(false)
 
     if (inputSearch !== "") {
       const response = relatedEntities.filter(e => {
@@ -73,7 +75,10 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
       })
 
       if (response.length > 0) setDataSearch(response)
-      else setDataSearch([])
+      else {
+        setDataSearch([])
+        setResultNotFound(true)
+      }
     } else setDataSearch([])
 
     setSearchLoading(false)
@@ -168,7 +173,7 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
       }}>{
           searchLoading ?
             "Loading Search...." :
-            searchLoading === false && inputSearch !== "" && dataSearch.length > 0 ?
+            resultNotFound ?
               `${dataSearch.length} result found.` : ""}
       </p>
 
@@ -189,7 +194,7 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
             <TableBody>
               {dataSearch.length > 0 ?
                 _renderInfoTable(dataSearch) :
-                dataSearch.length === 0 && inputSearch !== "" && !searchLoading ?
+                resultNotFound ?
                   _renderInfoTable([{
                     id: 0,
                     quant: 0,
