@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 import { withStyles, makeStyles, styled } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
+import TablePagination from '@material-ui/core/TablePagination';
+import TableContainer from "@material-ui/core/TableContainer";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import TextField from '@material-ui/core/Input';
 import Button from "@material-ui/core/Button";
+import Table from "@material-ui/core/Table";
+import Paper from "@material-ui/core/Paper";
+
 
 import { Link } from "react-router-dom";
 
@@ -48,6 +50,9 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
   const [searchLoading, setSearchLoading] = useState(false)
   const [resultNotFound, setResultNotFound] = useState(false)
 
+  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [page, setPage] = useState(0);
+
   const handleCrossSearch = (entite) => {
     const { typeTerm, termIdentificator } = entite;
 
@@ -57,6 +62,15 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
       typeTerm === "cancer" ? termIdentificator : entitieSelected;
 
     return { dataSearchPolyphenol, dataSearchChemical };
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   const filterData = () => {
@@ -84,31 +98,32 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
     setSearchLoading(false)
   }
 
-  const _renderInfoTable = e => e.map((row, index) => {
-    const { id, quant, termIdentificator } = row;
-    const {
-      dataSearchPolyphenol,
-      dataSearchChemical,
-    } = handleCrossSearch(row);
+  const _renderInfoTable = e =>
+    e.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+      const { id, quant, termIdentificator } = row;
+      const {
+        dataSearchPolyphenol,
+        dataSearchChemical,
+      } = handleCrossSearch(row);
 
-    return (
-      <StyledTableRow
-        to={`/${dataSearchPolyphenol}/${dataSearchChemical}`}
-        style={{ textDecoration: "none" }}
-        component={Link}
-        target="_blank"
-        key={id}
-      >
-        <StyledTableCell component="th" scope="row">
-          {index}
-        </StyledTableCell>
-        <StyledTableCell component="th" scope="row">
-          {termIdentificator}
-        </StyledTableCell>
-        <StyledTableCell align="right">{quant}</StyledTableCell>
-      </StyledTableRow>
-    );
-  })
+      return (
+        <StyledTableRow
+          to={`/${dataSearchPolyphenol}/${dataSearchChemical}`}
+          style={{ textDecoration: "none" }}
+          component={Link}
+          target="_blank"
+          key={id}
+        >
+          <StyledTableCell component="th" scope="row">
+            {index}
+          </StyledTableCell>
+          <StyledTableCell component="th" scope="row">
+            {termIdentificator}
+          </StyledTableCell>
+          <StyledTableCell align="right">{quant}</StyledTableCell>
+        </StyledTableRow>
+      );
+    })
 
   if (relatedEntities.length === 0) return <></>;
 
@@ -205,6 +220,19 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[100, 50, 25]}
+          component="div"
+          count={dataSearch.length > 0 ?
+            dataSearch.length :
+            resultNotFound ? 1 :
+              relatedEntities.length
+          }
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </div>
     </>
   );

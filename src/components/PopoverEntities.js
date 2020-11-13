@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Popover from "@material-ui/core/Popover";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { Popover, PopoverHeader, PopoverBody, PopoverFooter } from 'reactstrap';
 
 import { ColorAssociation } from 'src/config/colors'
 
 import api from "src/config/api";
 
-const useStyles = makeStyles((theme) => ({
-  popover: {
-    pointerEvents: "none",
-    // padding: 10,
-  },
-  paper: {
-    padding: theme.spacing(1),
-    backgroundColor: "black",
-    color: "white",
-    width: 300,
-  },
-}));
-
 export default function MouseOverPopover({ data, color, children }) {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [dataEntitie, setDataEntitie] = useState({})
+
+  const toggle = () => setPopoverOpen(!popoverOpen);
 
   useEffect(() => {
     if (data) {
@@ -36,22 +22,10 @@ export default function MouseOverPopover({ data, color, children }) {
     }
   }, [data])
 
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-
   return (
     <>
       <span
-        onMouseEnter={handlePopoverOpen}
-        // onMouseLeave={handlePopoverClose}
-        // onMouseOut={handlePopoverClose}
+        id={`Popover${data.id}`}
         style={{
           padding: 2,
           color: "white",
@@ -59,66 +33,90 @@ export default function MouseOverPopover({ data, color, children }) {
           fontWeight: "bold",
           textDecoration: "none",
           backgroundColor: color,
+          cursor: "pointer",
+          outline: 0,
+          border: "none"
         }}
       >
         {children}
       </span>
       <Popover
-        id="mouse-over-popover"
-        className={classes.popover}
-        onBlur={handlePopoverClose}
-        classes={{
-          paper: classes.paper,
-        }}
-        open={open}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        onClose={handlePopoverClose}
-      // disableRestoreFocus
-      >
-        <div>
-          <h1>{data.db_equivalence}</h1>
-          <p style={{ borderColor: "white", borderWidth: 1 }} >
-            {data.db_term} -  {ColorAssociation[data.entity_type].description}
-          </p>
+        placement="top"
+        isOpen={popoverOpen}
+        target={`Popover${data.id}`}
+        toggle={toggle}>
 
+        <div style={{
+          backgroundColor: "white",
+          padding: 10,
+          border: "1px solid rgba(0,0,0,0.1)",
+          maxWidth: 400
+        }}>
+          <PopoverHeader >
+            <div style={{
+              marginBottom: 10
+            }}>
+              <h1>{data.db_equivalence}</h1>
+              <p style={{ borderColor: "black", borderWidth: 1 }} >
+                {data.db_term} -  {ColorAssociation[data.entity_type].description}
+              </p>
+            </div>
+          </PopoverHeader>
+          <PopoverBody>
+            <div>
 
-          {dataEntitie.term_definition && dataEntitie.term_definition !== "null" && <div style={{ marginTop: 20, marginBottom: 20 }}>
-            {dataEntitie.term_description && <p>{dataEntitie.term_description}</p>}
-            {dataEntitie.term_definition && <p>{dataEntitie.term_definition}</p>}
-          </div>}
+              {console.log(dataEntitie)}
 
-          {dataEntitie.DrugBankID &&
-            <a
-              href={`https://go.drugbank.com/drugs/${dataEntitie.DrugBankID}`}
-              target="_blanck">
-              DrugBankID
-             </a>
-          }
+              {dataEntitie.term_definition &&
+                dataEntitie.term_definition !== "null" &&
+                <div style={{ marginBottom: 20 }}>
+                  {dataEntitie.term_description && <p>{dataEntitie.term_description}</p>}
+                  {dataEntitie.term_definition && <p>{dataEntitie.term_definition}</p>}
+                </div>
+              }
 
-          {dataEntitie.PubChemCompoundID &&
-            <a
-              href={`https://pubchem.ncbi.nlm.nih.gov/#query=${dataEntitie.PubChemCompoundID}`}
-              target="_blanck">
-              PubChem
-             </a>
-          }
+              {dataEntitie.DrugBankID &&
+                dataEntitie.DrugBankID !== "NA" &&
+                dataEntitie.DrugBankID !== "null" &&
+                <a
+                  href={`https://go.drugbank.com/drugs/${dataEntitie.DrugBankID}`}
+                  target="_blanck">
+                  DrugBankID
+                </a>
+              }
 
-          {dataEntitie.link_wiki &&
-            <a
-              href={dataEntitie.link_wiki}
-              target="_blanck">
-              Link Wiki
-            </a>
-          }
+              {dataEntitie.PubChemCompoundID &&
+                dataEntitie.PubChemCompoundID !== "NA" &&
+                dataEntitie.PubChemCompoundID !== "null" &&
+                <a
+                  href={`https://pubchem.ncbi.nlm.nih.gov/#query=${dataEntitie.PubChemCompoundID}`}
+                  target="_blanck">
+                  PubChem
+                </a>
+              }
 
+              {dataEntitie.link_wiki &&
+                dataEntitie.link_wiki !== "NA" &&
+                dataEntitie.link_wiki !== "null" &&
+                <a
+                  href={dataEntitie.link_wiki}
+                  target="_blanck">
+                  Link Wiki
+                </a>
+              }
+
+              <p style={{
+                fontWeight: "bold",
+                color: "#3F3C56",
+                cursor: "pointer",
+                padding: "15px",
+                textAlign: "right"
+              }}
+                onClick={toggle}>
+                Close
+              </p>
+            </div>
+          </PopoverBody>
         </div>
       </Popover>
     </>

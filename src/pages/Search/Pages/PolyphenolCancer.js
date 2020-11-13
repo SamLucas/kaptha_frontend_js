@@ -19,7 +19,7 @@ import { columns, customStyles } from "src/config/DataTableConfig";
 import SearchController from "src/controller/Search";
 import CrossSearchController from "src/controller/CrossSearch";
 import PageDataError from "src/components/PageDataError";
-import { Result } from "src/data/moocks";
+// import { Result } from "src/data/moocks";
 
 import DataList from 'src/pages/Search/Components/DataList'
 import { debounceEvent } from 'src/Utils/index'
@@ -171,7 +171,8 @@ export default function CrossSearch({ ative, dataSearch }) {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>surveyed polyphenol and cancer researched: {textSearch.p}, {textSearch.c}.</p>
+            <p>Polyphenol researched: {textSearch.p}.</p>
+            <p>Cancer researched: {textSearch.c}.</p>
           </div>
 
           <DataTable

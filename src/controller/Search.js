@@ -46,24 +46,37 @@ function Search() {
 
   const handleFindPhrase = (text, frase) => {
 
+    let error = false
+    let amountPhare = 0
+
     frase.forEach((element) => {
       const { original_sentence, association_type } = element;
       const colorPhare = ColorAssociation[association_type].color;
 
-      const TextPhrases = handleFindEntitiesPharase(
-        original_sentence,
-        element.start_pos,
-        element.entitiesRules
-      );
-
-      text = text
-        .split(original_sentence)
-        .join(
-          `<spanLine>${TextPhrases}=|=${colorPhare}</spanLine>`
+      if (original_sentence !== "NA") {
+        const TextPhrases = handleFindEntitiesPharase(
+          original_sentence,
+          element.start_pos,
+          element.entitiesRules
         );
+
+        if (text.split(original_sentence).length === 1) {
+          error = true
+          return
+        } else amountPhare = amountPhare + 1
+
+        text = text
+          .split(original_sentence)
+          .join(
+            `<spanLine>${TextPhrases}=|=${colorPhare}</spanLine>`
+          );
+
+
+      } else error = true
+
     });
 
-    return text;
+    return { text, error, amountPhare };
   };
 
   const handleFindEntitiesPharase = (
@@ -118,6 +131,7 @@ function Search() {
       text = text
         .split(word)
         .join(`<spanbackground>${data.word}*|*${data.colorPhare}*|*${JSON.stringify(data.element)}</spanbackground>`);
+
     })
 
     return text;

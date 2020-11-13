@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -16,12 +16,13 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import InfoIcon from "@material-ui/icons/Info";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import StorageIcon from "@material-ui/icons/Storage";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import CategoryIcon from "@material-ui/icons/Category";
 import SearchIcon from "@material-ui/icons/Search";
+import HelpIcon from '@material-ui/icons/Help';
+import ContactsIcon from '@material-ui/icons/Contacts';
 
 import { useHistory } from "react-router-dom";
 
@@ -89,11 +90,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PersistentDrawerLeft({ children }) {
+  const history = useHistory();
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const history = useHistory();
+  const namePageCurrent = history.location.pathname
+
+  useEffect(() => {
+
+    const namesPages = [
+      "/Knowledgebaseinfo",
+      "/Statistics",
+      "/Architecture",
+      "/Resources",
+      "/Contactus",
+      "/Help"
+    ]
+
+    if (namesPages.find(ele => ele === namePageCurrent)) {
+      setOpen(true)
+    }
+  }, [namePageCurrent])
+
+  console.log(history)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -109,12 +130,12 @@ export default function PersistentDrawerLeft({ children }) {
       icon: <SearchIcon />,
     },
     {
-      name: "Knowledgebase info",
-      icon: <StorageIcon />,
-    },
-    {
       name: "Statistics",
       icon: <EqualizerIcon />,
+    },
+    {
+      name: "Knowledgebase info",
+      icon: <StorageIcon />,
     },
     {
       name: "Architecture",
@@ -125,8 +146,12 @@ export default function PersistentDrawerLeft({ children }) {
       icon: <CategoryIcon />,
     },
     {
+      name: "Help",
+      icon: <HelpIcon />,
+    },
+    {
       name: "Contact us",
-      icon: <InfoIcon />,
+      icon: <ContactsIcon />,
     },
   ];
 
@@ -177,8 +202,8 @@ export default function PersistentDrawerLeft({ children }) {
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
-              <ChevronRightIcon />
-            )}
+                <ChevronRightIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
