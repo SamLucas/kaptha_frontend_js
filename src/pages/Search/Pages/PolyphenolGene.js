@@ -127,8 +127,8 @@ export default function CrossSearch({ ative, dataSearch }) {
 
   useEffect(() => {
     if (typeof dataSearch === "object") {
-      const { cancer, polifenol } = dataSearch;
-      handleSearch(polifenol, cancer);
+      const { cancergene, polifenol } = dataSearch;
+      handleSearch(polifenol, cancergene);
     }
   }, [dataSearch]);
 

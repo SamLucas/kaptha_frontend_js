@@ -14,7 +14,7 @@ export default function App() {
     <BrowserRouter>
       <Switch>
         <Route
-          path={["/", "/Search", "/:polifenol/:cancer"]}
+          path={["/", "/Search", "/:tp/:polifenol/:cancergene"]}
           component={Search}
           exact
         />

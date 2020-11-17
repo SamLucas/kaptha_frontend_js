@@ -3,36 +3,54 @@ import { Chart, Interval, Tooltip, Axis, Coordinate } from "bizcharts";
 import DataSet from "@antv/data-set";
 
 export default function GraphicInfo({ relatedEntities }) {
-  if (relatedEntities.length === 0) return <></>;
 
-  const total = relatedEntities
-    .map((ele) => parseInt(ele.quant))
-    .reduce((acc, val) => acc + val);
+  let ds = new DataSet();
+  let dv;
 
-  const media = Math.floor(total / relatedEntities.length);
-
-  const data = relatedEntities
-    .filter((ele) => ele.quant > media)
-    .map((ele) => ({
-      quant: ele.quant,
-      termIdentificator: ele.termIdentificator,
-    }));
-
-  const ds = new DataSet();
-  let dv = ds.createView().source(data);
-
-  dv.transform({
+  const confTransform = {
     type: 'sort',
     callback(a, b) {
 
       const numberOne = parseInt(a.quant)
       const numberTwo = parseInt(b.quant)
 
-      console.log("sort", numberOne, numberTwo, numberOne - numberTwo)
-
-      return numberOne - numberTwo < 0 ? -1 : numberOne - numberTwo === 0 ? 0 : 1
+      return numberOne - numberTwo < 0 ? -1 :
+        numberOne - numberTwo === 0 ? 0 :
+          1
     }
-  });
+  }
+
+  if (relatedEntities.length === 0) return <></>;
+
+  if (relatedEntities.length <= 80) {
+
+    const data = relatedEntities.map((ele) => ({
+      quant: ele.quant,
+      termIdentificator: ele.termIdentificator,
+    }));
+
+    dv = ds.createView().source(data);
+    dv.transform(confTransform);
+
+  } else {
+
+    const total = relatedEntities
+      .map((ele) => parseInt(ele.quant))
+      .reduce((acc, val) => acc + val);
+
+    const media = Math.floor(total / relatedEntities.length);
+
+    const data = relatedEntities
+      .filter((ele) => ele.quant > media)
+      .map((ele) => ({
+        quant: ele.quant,
+        termIdentificator: ele.termIdentificator,
+      }));
+
+    dv = ds.createView().source(data);
+    dv.transform(confTransform);
+
+  }
 
   return (
     <div style={{ marginTop: 20, marginBottom: 20 }}>

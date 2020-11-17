@@ -22,21 +22,24 @@ export default function Statistics() {
 
     const listCancer = CrossSearchController.listCancer();
     const listPolyfenol = CrossSearchController.listPolifenols();
+    const listGene = CrossSearchController.listGene();
 
-    setOptions([...listCancer, ...listPolyfenol]);
+    setOptions([...listCancer, ...listPolyfenol, ...listGene]);
     setLoading(false);
   }, []);
 
   const handleLoadListEntitiesRelated = () => {
     const listCancer = CrossSearchController.sortedByCancer(entitieSelected);
+    const listGene = CrossSearchController.sortedByGene(entitieSelected);
     const listPolyfenol = CrossSearchController.sortedByPolifenol(
-      entitieSelected
+      entitieSelected,
+      true
     );
 
     const entitiesFiltred =
-      listCancer.length !== 0
-        ? listCancer.map((ele) => ele.extraData)
-        : listPolyfenol.map((ele) => ele.extraData);
+      listCancer.length !== 0 ? listCancer.map((ele) => ele.extraData) :
+        listGene.length !== 0 ? listGene.map((ele) => ele.extraData) :
+          listPolyfenol.map((ele) => ele.extraData);
 
     setLoading(false);
     setRelatedEntities(entitiesFiltred);

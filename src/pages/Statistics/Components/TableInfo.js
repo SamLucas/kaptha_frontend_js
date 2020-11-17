@@ -15,7 +15,9 @@ import Paper from "@material-ui/core/Paper";
 
 import { Link } from "react-router-dom";
 
-import { debounceEvent } from 'src/Utils/index'
+import { capitalize, debounceEvent } from 'src/Utils/index'
+
+import CrossSearch from "src/controller/CrossSearch"
 
 const useStyles = makeStyles({
   table: {
@@ -53,15 +55,32 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
   const [rowsPerPage, setRowsPerPage] = useState(100);
   const [page, setPage] = useState(0);
 
+  const typeTermSeach = CrossSearch.searchTerm(entitieSelected)
+
   const handleCrossSearch = (entite) => {
     const { typeTerm, termIdentificator } = entite;
 
-    const dataSearchPolyphenol =
-      typeTerm === "polifenol" ? termIdentificator : entitieSelected;
-    const dataSearchChemical =
-      typeTerm === "cancer" ? termIdentificator : entitieSelected;
+    let dataSearchPolyphenol = "";
+    let dataSearchChemical = "";
+    let typeSearch = 0;
 
-    return { dataSearchPolyphenol, dataSearchChemical };
+    if (typeTerm === "polifenol" && typeTermSeach !== "polifenol") {
+      dataSearchPolyphenol = termIdentificator
+      dataSearchChemical = entitieSelected
+      typeSearch = typeTermSeach === "cancer" ? 0 : 1
+      console.log("1", typeTermSeach)
+    } else {
+      dataSearchPolyphenol = entitieSelected
+      dataSearchChemical = termIdentificator
+      typeSearch = typeTerm === "cancer" ? 0 : 1
+      console.log("2", typeTerm)
+    }
+
+    return {
+      dataSearchPolyphenol,
+      dataSearchChemical,
+      typeSearch
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -100,15 +119,17 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
 
   const _renderInfoTable = e =>
     e.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-      const { id, quant, termIdentificator } = row;
+      const { id, quant, typeTerm, termIdentificator } = row;
+
       const {
         dataSearchPolyphenol,
         dataSearchChemical,
+        typeSearch
       } = handleCrossSearch(row);
 
       return (
         <StyledTableRow
-          to={`/${dataSearchPolyphenol}/${dataSearchChemical}`}
+          to={`/${typeSearch}/${dataSearchPolyphenol}/${dataSearchChemical}`}
           style={{ textDecoration: "none" }}
           component={Link}
           target="_blank"
@@ -119,6 +140,9 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
           </StyledTableCell>
           <StyledTableCell component="th" scope="row">
             {termIdentificator}
+          </StyledTableCell>
+          <StyledTableCell component="th" scope="row">
+            {capitalize(typeTerm)}
           </StyledTableCell>
           <StyledTableCell align="right">{quant}</StyledTableCell>
         </StyledTableRow>
@@ -201,6 +225,7 @@ export default function TableInfo({ relatedEntities, entitieSelected }) {
               <TableRow>
                 <StyledTableCell>Index</StyledTableCell>
                 <StyledTableCell>Name of related entities</StyledTableCell>
+                <StyledTableCell>Type of related entities</StyledTableCell>
                 <StyledTableCell align="right">
                   Number of associated records
               </StyledTableCell>

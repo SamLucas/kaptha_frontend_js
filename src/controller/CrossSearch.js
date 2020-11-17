@@ -3,8 +3,9 @@ import CrossPolifenol from "src/data/dfCrossIndexPolifenol";
 import CrossGene from "src/data/dfCrossIndexGeneDistribuicao";
 
 function CrossSearch() {
-  function sortedByPolifenol(polifenol) {
+  function sortedByPolifenol(polifenol, includeGene = false) {
     let response = [];
+
     CrossPolifenol.forEach((ele) => {
       const { polifenol: polifenolMap, cancer, quant } = ele;
       if (polifenolMap === polifenol) {
@@ -24,6 +25,28 @@ function CrossSearch() {
         ];
       }
     });
+
+    if (includeGene === true) {
+      CrossGene.forEach((ele) => {
+        const { polifenol: polifenolMap, gene, quant } = ele;
+        if (polifenolMap === polifenol) {
+          response = [
+            ...new Set([
+              ...response,
+              {
+                label: `${gene} (${quant})`,
+                value: gene,
+                extraData: {
+                  ...ele,
+                  termIdentificator: gene,
+                  typeTerm: "gene",
+                },
+              },
+            ]),
+          ];
+        }
+      });
+    }
 
     return response;
   }
@@ -109,7 +132,11 @@ function CrossSearch() {
       (ele) => (response = [...new Set([...response, ele.polifenol])])
     );
 
-    return response.map((ele) => ({ label: ele, value: ele }));
+    return response.map((ele) => ({
+      label: ele,
+      value: ele,
+      typeTerm: "gene"
+    }));
   }
 
   function listCancer() {
@@ -118,16 +145,41 @@ function CrossSearch() {
       (ele) => (response = [...new Set([...response, ele.cancer])])
     );
 
-    return response.map((ele) => ({ label: ele, value: ele }));
+    return response.map((ele) => ({
+      label: ele,
+      value: ele,
+      typeTerm: "cancer"
+    }));
+  }
+
+  function listGene() {
+    let response = [];
+    CrossGene.forEach(
+      (ele) => (response = [...new Set([...response, ele.gene])])
+    );
+
+    return response.map((ele) => ({
+      label: ele,
+      value: ele,
+      typeTerm: "gene"
+    }));
+  }
+
+  function searchTerm(term) {
+    if (CrossCancer.filter(ele => ele.cancer === term).length > 0) return "cancer"
+    else if (CrossPolifenol.filter(ele => ele.polifenol === term).length > 0) return "polifenol"
+    else return "gene"
   }
 
   return {
+    listGene,
     listCancer,
     listPolifenols,
     sortedByPolifenol,
     sortedByPolifenolGene,
     sortedByCancer,
     sortedByGene,
+    searchTerm,
   };
 }
 

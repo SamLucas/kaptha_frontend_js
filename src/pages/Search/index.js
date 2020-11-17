@@ -22,14 +22,18 @@ const useStyles = makeStyles({
 });
 
 export default function CenteredTabs() {
+  const params = useParams();
+
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(params.tp === "0" ? 0 : params.tp === "1" ? 4 : 0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const params = useParams();
+
+  console.log(params)
+
 
   return (
     <Header>
@@ -59,14 +63,26 @@ export default function CenteredTabs() {
 
       <PolyphenolCancer
         ative={value === 0}
-        dataSearch={params && params.cancer && params.polifenol && params}
+        dataSearch={
+          params &&
+          params.cancergene &&
+          params.polifenol &&
+          params.tp === "0" &&
+          params
+        }
       />
       <Cancer ative={value === 1} />
       <Polyphenol ative={value === 2} />
       <Gene ative={value === 3} />
       <PolyphenolGene
         ative={value === 4}
-        dataSearch={params && params.gene && params.polifenol && params}
+        dataSearch={
+          params &&
+          params.cancergene &&
+          params.polifenol &&
+          params.tp === "1" &&
+          params
+        }
       />
     </Header>
   );
