@@ -135,7 +135,7 @@ export default function CrossSearch({ ative, dataSearch }) {
   useEffect(() => {
     let isReady = true;
     if (dataSearchPolyphenol !== "") {
-      const newList = CrossSearchController.sortedByPolifenol(
+      const newList = CrossSearchController.sortedByPolifenolGene(
         dataSearchPolyphenol
       );
       isReady && setDataList(newList);
@@ -146,7 +146,7 @@ export default function CrossSearch({ ative, dataSearch }) {
   useEffect(() => {
     let isReady = true;
     if (dataSearchChemical !== "") {
-      const newList = CrossSearchController.sortedByCancer(dataSearchChemical);
+      const newList = CrossSearchController.sortedByGene(dataSearchChemical);
       isReady && setDataList(newList);
     }
     return () => (isReady = false);
@@ -245,17 +245,15 @@ export default function CrossSearch({ ative, dataSearch }) {
         </div>
       </header>
 
-      {/* {dataList.length > 0 ?
+      {dataList.length > 0 ?
         <DataList
           data={dataList}
           handleSearch={handleSearch}
           dataSearchPolyphenol={dataSearchPolyphenol}
           dataSearchChemical={dataSearchChemical}
           setDataList={setDataList} />
-        : 
-      } */}
-
-      {SwitchVisibleContent()}
+        : SwitchVisibleContent()
+      }
 
       {noDataFound && (
         <section className="containerInformationSearch">

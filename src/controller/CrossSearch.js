@@ -1,5 +1,6 @@
 import CrossCancer from "src/data/dfCrossIndexCancer";
 import CrossPolifenol from "src/data/dfCrossIndexPolifenol";
+import CrossGene from "src/data/dfCrossIndexGeneDistribuicao";
 
 function CrossSearch() {
   function sortedByPolifenol(polifenol) {
@@ -27,11 +28,61 @@ function CrossSearch() {
     return response;
   }
 
+  function sortedByPolifenolGene(polifenol) {
+    let response = [];
+    CrossGene.forEach((ele) => {
+      const { polifenol: polifenolMap, gene, quant } = ele;
+      if (polifenolMap === polifenol) {
+        response = [
+          ...new Set([
+            ...response,
+            {
+              label: `${gene} (${quant})`,
+              value: gene,
+              extraData: {
+                ...ele,
+                termIdentificator: gene,
+                typeTerm: "gene",
+              },
+            },
+          ]),
+        ];
+      }
+    });
+
+    return response;
+  }
+
   function sortedByCancer(cancer) {
     let response = [];
     CrossPolifenol.forEach((ele) => {
       const { polifenol, cancer: cancerMap, quant } = ele;
       if (cancerMap === cancer) {
+        response = [
+          ...new Set([
+            ...response,
+            {
+              label: `${polifenol} (${quant})`,
+              value: polifenol,
+              extraData: {
+                ...ele,
+                termIdentificator: polifenol,
+                typeTerm: "polifenol",
+              },
+            },
+          ]),
+        ];
+      }
+    });
+
+    return response;
+  }
+
+  function sortedByGene(cancer) {
+    let response = [];
+    CrossGene.forEach((ele) => {
+      const { polifenol, gene: geneMap, quant } = ele;
+      if (geneMap === cancer) {
         response = [
           ...new Set([
             ...response,
@@ -71,10 +122,12 @@ function CrossSearch() {
   }
 
   return {
-    sortedByPolifenol,
-    sortedByCancer,
-    listPolifenols,
     listCancer,
+    listPolifenols,
+    sortedByPolifenol,
+    sortedByPolifenolGene,
+    sortedByCancer,
+    sortedByGene,
   };
 }
 
