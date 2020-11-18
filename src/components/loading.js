@@ -31,7 +31,11 @@ function Loading() {
           width="100px"
           height="100px"
         />
-        <p>Loading...</p>
+        <p>
+          Loading...<br />
+        Sorry, we're processing your search. Wait for some more...
+        </p>
+
       </section>
     </Container>
   );

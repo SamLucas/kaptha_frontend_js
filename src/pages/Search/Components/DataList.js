@@ -35,37 +35,40 @@ function DataList({
         gridTemplateColumns: "repeat(3, 1fr)",
         gap: 20
       }}>
-        {data.map(ele => {
-          const { extraData: { termIdentificator, quant } } = ele
+        {data.sort(
+          (a, b) => b.extraData.quant - a.extraData.quant
+        )
+          .map(ele => {
+            const { extraData: { termIdentificator, quant } } = ele
 
-          return (
-            <span style={{
-              padding: 20,
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              backgroundColor: "white",
-              borderRadius: 5,
-              cursor: "pointer"
-            }}
-              onClick={() => _handleSearch(ele)}
-            >
-              <span>{termIdentificator}</span>
-              <div style={{
+            return (
+              <span style={{
+                padding: 20,
                 display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
-                borderRadius: "50%",
-                width: 20,
-                height: 20,
-                color: "white",
-                backgroundColor: "#3F3C56"
-              }}>
-                <span >{quant}</span>
-              </div>
-            </span>
-          )
-        })}
+                flexDirection: "row",
+                justifyContent: "space-between",
+                backgroundColor: "white",
+                borderRadius: 5,
+                cursor: "pointer"
+              }}
+                onClick={() => _handleSearch(ele)}
+              >
+                <span>{termIdentificator}</span>
+                <div style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  borderRadius: "50%",
+                  width: 20,
+                  height: 20,
+                  color: "white",
+                  backgroundColor: "#3F3C56"
+                }}>
+                  <span >{quant}</span>
+                </div>
+              </span>
+            )
+          })}
       </div>
     </div>
   );
