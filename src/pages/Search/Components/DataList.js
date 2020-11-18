@@ -16,7 +16,7 @@ function DataList({
     const { extraData: { typeTerm, termIdentificator } } = ele
 
     let _dataSearchPolyphenol = typeTerm === "polifenol" ? termIdentificator : dataSearchPolyphenol
-    let _dataSearchChemical = typeTerm === "cancer" ? termIdentificator : dataSearchChemical
+    let _dataSearchChemical = typeTerm !== "polifenol" ? termIdentificator : dataSearchChemical
 
     handleSearch(_dataSearchPolyphenol, _dataSearchChemical)
 
