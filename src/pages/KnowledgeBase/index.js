@@ -19,11 +19,11 @@ export default function KnowledgeBase() {
         alignItems: "center"
       }}>
         <h3 style={{ marginTop: 10, marginBottom: 20 }}>
-          Summary of information available on the kaptha web tool
+          Summary of information available on the Kaphta web tool
         </h3>
         <img
           src={ImageTable}
-          alt="Summary of information available on the kaptha web tool"
+          alt="Summary of information available on the Kaphta web tool"
         />
       </div>
 

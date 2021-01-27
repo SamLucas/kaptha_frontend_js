@@ -22,7 +22,7 @@ export default function Architecture() {
       }}>
         <img
           src={Unarerp}
-          alt="Summary of information available on the kaptha web tool"
+          alt="Summary of information available on the Kaphta web tool"
         />
         <h3 style={{
           margin: 40,

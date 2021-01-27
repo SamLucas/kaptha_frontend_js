@@ -91,28 +91,28 @@ export const columnsRule = [
 
 const HeaderDataTable = [
   {
-    title: "P1",
+    title: "S1",
     description:
       "Refers to rules on anticancer activity recognized in the sentences of the abstract containing the entity (ies) sought.",
   },
   {
-    title: "P2",
+    title: "S2",
     description:
       "Refers to rules on the activity of regulating genes recognized in the sentences of the abstract containing the entity (ies) sought.",
   },
   {
-    title: "P3",
+    title: "S3",
     description:
       "Total frequency of occurrences of the entity (ies) sought in the abstract.",
   },
   {
-    title: "P4",
+    title: "S4",
     description: "Weighted average generated from the scores P1, P2 and P3.",
   },
   {
-    title: "P5",
+    title: "S5",
     description:
-      "Measure resulting from multiple text classification, using supervised machine learning.",
+      "Measure resulting from text classification based on ensemble method.",
   },
 ];
 

@@ -7,7 +7,7 @@ export default function Architecture() {
 
   return (
     <Header>
-      <h2>Kaptha Architecture</h2>
+      <h2>Kaphta Architecture</h2>
       <p style={{ margin: "15px 0" }}>
         The Kaphta architecture is organized in 4 stages (Figure 1): text classification of abstracts about cancer activity, information extraction, indexing of information extracted, system of recuperation and ranking of indexed information, which are presented below:
       </p>

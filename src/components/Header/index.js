@@ -176,7 +176,7 @@ export default function PersistentDrawerLeft({ children }) {
           </IconButton>
           {!open && (
             <Typography style={{ fontWeight: "bold" }} variant="h6" noWrap>
-              Kaptha
+              Kaphta
             </Typography>
           )}
         </Toolbar>
@@ -196,7 +196,7 @@ export default function PersistentDrawerLeft({ children }) {
             variant="h6"
             noWrap
           >
-            Kaptha
+            Kaphta
           </Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (

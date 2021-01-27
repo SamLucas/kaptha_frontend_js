@@ -9,9 +9,9 @@ export default function Resources() {
 
   return (
     <Header>
-      <h2>Kaptha Resources</h2>
+      <h2>Kaphta Resources</h2>
       <p style={{ margin: "15px 0" }}>
-        The supplementary materials generated in the implementation of the rules dictionary for the Kaptha architecture are presented below:
+        The supplementary materials generated in the implementation of the rules dictionary for the Kaphta architecture are presented below:
       </p>
 
       <ul style={{ marginLeft: 50 }}>
@@ -34,7 +34,7 @@ export default function Resources() {
       </ul>
 
       <p style={{ margin: "15px 0" }}>
-        The following are the resources and supplementary materials generated in the execution of the Kaptha architecture steps:
+        The following are the resources and supplementary materials generated in the execution of the Kaphta architecture steps:
       </p>
 
       <ul style={{ marginLeft: 50 }}>
