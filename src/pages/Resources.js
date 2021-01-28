@@ -11,39 +11,48 @@ export default function Resources() {
     <Header>
       <h2>Kaphta Resources</h2>
       <p style={{ margin: "15px 0" }}>
-        The supplementary materials generated in the implementation of the rules dictionary for the Kaphta architecture are presented below:
+        In this session are presented supplementary material, details, and R Scripts about Kaphta architecture execution. Below are listed GitHub links para each step of architecture execution:
+
       </p>
 
       <ul style={{ marginLeft: 50 }}>
         <li>
           <a
-            href="https://drive.google.com/file/d/1DotCACylU7GueHaPJkstwriWsJElFyI3/view?usp=sharing"
+            href="https://github.com/ramongsilva/Text-classification-of-pubmed-abstracts-on-polyphenols-anticancer-activity"
             target="_blanck"
           >
-            Rules Dictionary Implementation [pdf file]
+            Text classification of PubMed abstracts on cancer activity [GitHub link]
           </a>
         </li>
         <li>
           <a
-            href="https://drive.google.com/file/d/14w960ksCUXtgk_Arf3cDgPMoiNDYtKD-/view?usp=sharing"
+            href="https://github.com/ramongsilva/Information-extraction-from-pubmed-abstracts-sentences-on-polyphenols-anticancer-activity"
             target="_blanck"
           >
-            Patterns identified on sequence pattern mining [zip file]
+            Information extraction [GitHub link]
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/ramongsilva/System-for-the-retrieval-and-ranking-of-indexed-information"
+            target="_blanck"
+          >
+            System for the retrieval and ranking of indexed information [GitHub link]
           </a>
         </li>
       </ul>
 
       <p style={{ margin: "15px 0" }}>
-        The following are the resources and supplementary materials generated in the execution of the Kaphta architecture steps:
+        Below are presented information about the creation of the Rules Dictionary, used in the Information extraction and System for the retrieval and ranking of indexed information steps:
       </p>
 
       <ul style={{ marginLeft: 50 }}>
         <li>
           <a
-            href="https://drive.google.com/file/d/1KfCmazI57hHXE_bKTgDTAnKUkP_El64L/view?usp=sharing"
+            href="https://github.com/ramongsilva/Sequential-pattern-mining-in-pubmed-abstracts-sentences-on-anticancer-activity"
             target="_blanck"
           >
-            Entities dictionary [zip file]
+            Sequential pattern mining process [GitHub link]
           </a>
         </li>
         <li>
@@ -51,29 +60,14 @@ export default function Resources() {
             href="https://drive.google.com/file/d/1ZxQOrWO0SXXDvnnz4yIwlIhWNvw_uDVH/view?usp=sharing"
             target="_blanck"
           >
-            Textual corpus of PubMed abstracts [tsv file]
+            Rules Dictionary implementation [PDF file]
           </a>
         </li>
-        <li>
-          <a
-            href="https://drive.google.com/file/d/1d7zAn3D0Ze5DZDWHpKsYiV9c3WtlA2Ay/view?usp=sharing"
-            target="_blanck"
-          >
-            PubMed abstracts rotulated corpus (400 articles) [zip file]
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://drive.google.com/file/d/1h0N2nhncYouKWS2oey3jAL6Q-b5tM6To/view?usp=sharing"
-            target="_blanck"
-          >
-            PubMed abstracts classified with anticancer activity [tsv file]
-          </a>
-        </li>
+
       </ul>
 
 
-
+      {/* 
       <div style={{
         display: "flex",
         flexDirection: "column",
@@ -264,7 +258,7 @@ export default function Resources() {
         <p style={{ margin: "15px 30px", textAlign: "center" }}>
           Legend (PC - sentences with polyphenol-cancer; PG - sentences with polyphenol-gene; P - sentences with only polyphenol; C - sentences with only cancer; G - sentences with only genes).
       </p>
-      </div>
+      </div> */}
 
     </Header>
   );
