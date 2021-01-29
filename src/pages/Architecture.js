@@ -71,7 +71,7 @@ export default function Architecture() {
           Summary of information available on the Kaphta web tool
         </h3> */}
         <img
-          // style={{ width: "80%" }}
+          style={{ width: "70%" }}
           src={ImageArchitecture}
           alt="Summary of information available on the Kaphta web tool"
         />

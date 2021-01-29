@@ -34,6 +34,14 @@ export default function Resources() {
         </li>
         <li>
           <a
+            href="https://github.com/ramongsilva/Indexing-of-extracted-information"
+            target="_blanck"
+          >
+            Indexing of extracted information [GitHub link]
+          </a>
+        </li>
+        <li>
+          <a
             href="https://github.com/ramongsilva/System-for-the-retrieval-and-ranking-of-indexed-information"
             target="_blanck"
           >
