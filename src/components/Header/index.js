@@ -176,7 +176,7 @@ export default function PersistentDrawerLeft({ children }) {
           </IconButton>
           {!open && (
             <Typography style={{ fontWeight: "bold" }} variant="h6" noWrap>
-              Kaphta
+              Kaphta - Karkinos phenols target
             </Typography>
           )}
         </Toolbar>

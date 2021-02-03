@@ -28,6 +28,14 @@ export const Container = styled.div`
       h1.registerFind {
         margin-bottom: 5px;
       }
+
+      p {
+        font-size: 16px;
+
+        span {
+          font-weight: bold;
+        }
+      }
     }
 
     ul.containerPaginate {

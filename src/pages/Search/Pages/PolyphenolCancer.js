@@ -171,8 +171,8 @@ export default function CrossSearch({ ative, dataSearch }) {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Polyphenol researched: {textSearch.p}.</p>
-            <p>Cancer researched: {textSearch.c}.</p>
+            <p>Polyphenol researched: <span>{textSearch.p}</span>.</p>
+            <p>Cancer researched: <span>{textSearch.c}</span>.</p>
           </div>
 
           <DataTable

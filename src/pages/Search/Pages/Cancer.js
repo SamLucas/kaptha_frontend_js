@@ -94,7 +94,7 @@ export default function GeneSearch({ ative }) {
         <section>
           <div className="classInformation">
             <h1 className={"registerFind"}>{TotalRegisterAcount()}</h1>
-            <p>Searched {TYPE_PAGE}: {textSearch}.</p>
+            <p>Searched {TYPE_PAGE}: <p>{textSearch}</p>  .</p>
           </div>
 
           <DataTable
