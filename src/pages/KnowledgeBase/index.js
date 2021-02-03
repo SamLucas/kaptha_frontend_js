@@ -12,9 +12,9 @@ export default function KnowledgeBase() {
         The kaphta Web tool allows individual and cross searches to be carried out. In individual searches, you can search for polyphenol, cancer and gene entities, while in cross searches you can search for information about associations of polyphenol-cancer and polyphenol-gene entities. The following is a table with a summary of the information available for search on the Kaphta Web tool.
       </p>
 
-      <h2 style={{ margin: "15px auto" }} >
+      <p style={{ margin: "15px auto" }} >
         Last updated of the knowledge base: May 2018
-      </h2>
+      </p>
 
       <div style={{
         display: "flex",
