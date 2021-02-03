@@ -12,7 +12,6 @@ export default function Architecture() {
         The Kaphta architecture is divided into four steps (Figure below): text classification of abstracts on anticancer activity, information extraction, indexing of extracted information, and system for the retrieval and ranking of indexed information. These steps are described below.
       </p>
 
-      ResourceT1
 
       <h2>Text classification of abstracts on anticancer activity</h2>
       <p style={{ margin: "15px 0" }}>

@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "src/components/Header";
 
 import ResourceT1 from "src/assets/ResourceT1.png"
 import ResourceT2 from "src/assets/ResourceT2.jpeg"
 import ResourceT3 from "src/assets/ResourceT3.png"
+import File from "src/assets/Rules-dictionary-implementation2.pdf"
 
 export default function Resources() {
+
+  const [toogle, setToogle] = useState(false)
+
+  const downloadFile = () => {
+    return (
+      <iframe
+        src={File}
+        height={800}
+        width={500}
+      />
+    )
+  };
 
   return (
     <Header>
@@ -32,6 +45,8 @@ export default function Resources() {
             Information extraction [GitHub link]
           </a>
         </li>
+
+
         <li>
           <a
             href="https://github.com/ramongsilva/Indexing-of-extracted-information"
@@ -63,16 +78,24 @@ export default function Resources() {
             Sequential pattern mining process [GitHub link]
           </a>
         </li>
-        <li>
-          <a
-            href="https://drive.google.com/file/d/1ZxQOrWO0SXXDvnnz4yIwlIhWNvw_uDVH/view?usp=sharing"
-            target="_blanck"
-          >
-            Rules Dictionary implementation [PDF file]
-          </a>
-        </li>
+        <button onClick={() => setToogle(s => !s)} style={{
+          padding: 5,
+          marginTop: 5,
+          background: "#3F3C56",
+          color: 'white',
+          cursor: "pointer"
+        }}>
+          Rules Dictionary implementation [PDF file]
+        </button>
 
       </ul>
+
+      {
+        toogle && <iframe
+          src={File}
+          style={{ marginTop: "10px", width: "100%", height: "50vh" }}
+        />
+      }
 
 
       {/* 
@@ -268,6 +291,6 @@ export default function Resources() {
       </p>
       </div> */}
 
-    </Header>
+    </Header >
   );
 }
