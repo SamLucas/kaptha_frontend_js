@@ -66,6 +66,35 @@ export default function Resources() {
       </ul>
 
       <p style={{ margin: "15px 0" }}>
+        Below are presented all vocabularies and resources used in the dictionary implementation:
+     </p>
+
+      <ul style={{ marginLeft: 50 }}>
+        <li>
+          MeSH (Available at  <a href="https://www.nlm.nih.gov/mesh/download_mesh.html" target="_blank">{`<https://www.nlm.nih.gov/mesh/download_mesh.html>`}</a>. Accessed 10 April 2018)
+       </li>
+        <li>
+          DrugBank (Available at <a href="https://www.drugbank.ca/releases/latest#external-links" target="_blank">{`<https://www.drugbank.ca/releases/latest#external-links>`}</a>. Accessed 10 April 2018.)
+       </li>
+        <li>
+          MeSH-PubChem (Available at <a href="ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/Extras/CID-MeSH" target="_blank">{`<ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/Extras/CID-MeSH>`}</a>. Accessed 10 April 2018.
+       </li>
+        <li>
+          NCI (Available at <a href="https://www.cancer.gov/types" target="_blank">{`<https://www.cancer.gov/types>`}</a>. Accessed 10 April 2018)
+       </li>
+        <li>
+          HGNC (Available at <a href="https://www.genenames.org/cgi-bin/statistics" target="_blank">{`<https://www.genenames.org/cgi-bin/statistics>`}</a>. Accessed 30 March 2018)
+       </li>
+        <li>
+          Entrez NCBI (Available at <a href="ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz" target="_blank">{`<ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz>`}</a>. Accessed 30 March 2018)
+       </li>
+      </ul>
+
+
+
+
+
+      <p style={{ margin: "15px 0" }}>
         Below are presented information about the creation of the Rules Dictionary, used in the Information extraction and System for the retrieval and ranking of indexed information steps:
       </p>
 
