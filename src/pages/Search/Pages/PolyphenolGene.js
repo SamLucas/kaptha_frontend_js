@@ -133,8 +133,11 @@ export default function CrossSearch({ ative, dataSearch }) {
   }, [dataSearch]);
 
   useEffect(() => {
+
+    console.log('<>', dataSearchPolyphenol)
     let isReady = true;
     if (dataSearchPolyphenol !== "") {
+      // setDataResponse([])
       const newList = CrossSearchController.sortedByPolifenolGene(
         dataSearchPolyphenol
       );
@@ -144,8 +147,10 @@ export default function CrossSearch({ ative, dataSearch }) {
   }, [dataSearchPolyphenol]);
 
   useEffect(() => {
+
     let isReady = true;
     if (dataSearchChemical !== "") {
+      // setDataResponse([])
       const newList = CrossSearchController.sortedByGene(dataSearchChemical);
       isReady && setDataList(newList);
     }
