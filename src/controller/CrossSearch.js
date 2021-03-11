@@ -6,7 +6,7 @@ function CrossSearch() {
   function sortedByPolifenol(polifenol, includeGene = false) {
     let response = [];
 
-    console.log('>>>>> teste', polifenol)
+    // console.log('>>>>> teste', polifenol)
 
     CrossPolifenol.forEach((ele) => {
       const { polifenol: polifenolMap, cancer, quant } = ele;
@@ -56,25 +56,27 @@ function CrossSearch() {
   function sortedByPolifenolGene(polifenol) {
     let response = [];
 
-    CrossGene.forEach((ele) => {
-      const { polifenol: polifenolMap, gene, quant } = ele;
-      if (polifenolMap.toLocaleLowerCase() === polifenol.toLocaleLowerCase()) {
-        response = [
-          ...new Set([
-            ...response,
-            {
-              label: `${gene} (${quant})`,
-              value: gene,
-              extraData: {
-                ...ele,
-                termIdentificator: gene,
-                typeTerm: "gene",
+    if (polifenol) {
+      CrossGene.forEach((ele) => {
+        const { polifenol: polifenolMap, gene, quant } = ele;
+        if (polifenolMap.toLocaleLowerCase() === polifenol.toLocaleLowerCase()) {
+          response = [
+            ...new Set([
+              ...response,
+              {
+                label: `${gene} (${quant})`,
+                value: gene,
+                extraData: {
+                  ...ele,
+                  termIdentificator: gene,
+                  typeTerm: "gene",
+                },
               },
-            },
-          ]),
-        ];
-      }
-    });
+            ]),
+          ];
+        }
+      });
+    }
 
     return response;
   }
@@ -105,26 +107,31 @@ function CrossSearch() {
   }
 
   function sortedByGene(cancer) {
+
     let response = [];
-    CrossGene.forEach((ele) => {
-      const { polifenol, gene: geneMap, quant } = ele;
-      if (geneMap.toLocaleLowerCase() === cancer.toLocaleLowerCase()) {
-        response = [
-          ...new Set([
-            ...response,
-            {
-              label: `${polifenol} (${quant})`,
-              value: polifenol,
-              extraData: {
-                ...ele,
-                termIdentificator: polifenol,
-                typeTerm: "polifenol",
+
+    if (cancer) {
+      CrossGene.forEach((ele) => {
+        const { polifenol, gene: geneMap, quant } = ele;
+
+        if (geneMap && geneMap.toLocaleLowerCase() === cancer.toLocaleLowerCase()) {
+          response = [
+            ...new Set([
+              ...response,
+              {
+                label: `${polifenol} (${quant})`,
+                value: polifenol,
+                extraData: {
+                  ...ele,
+                  termIdentificator: polifenol,
+                  typeTerm: "polifenol",
+                },
               },
-            },
-          ]),
-        ];
-      }
-    });
+            ]),
+          ];
+        }
+      });
+    }
 
     return response;
   }
