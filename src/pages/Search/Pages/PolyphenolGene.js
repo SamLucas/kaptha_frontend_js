@@ -134,7 +134,7 @@ export default function CrossSearch({ ative, dataSearch }) {
 
   useEffect(() => {
 
-    console.log('<>', dataSearchPolyphenol)
+    // console.log('<>', dataSearchPolyphenol)
     let isReady = true;
     if (dataSearchPolyphenol !== "") {
       // setDataResponse([])
@@ -158,8 +158,13 @@ export default function CrossSearch({ ative, dataSearch }) {
   }, [dataSearchChemical]);
 
   useEffect(() => {
-    dataSearchPolyphenol !== "" && dataSearchChemical !== "" && setDataList([])
+    dataSearchPolyphenol !== "" || dataSearchChemical !== "" || setDataList([])
   }, [dataSearchPolyphenol, dataSearchChemical])
+
+
+  // useEffect(() => {
+  //   dataSearchPolyphenol !== "" && dataSearchChemical !== "" && setDataList([])
+  // }, [dataSearchPolyphenol, dataSearchChemical])
 
   const TotalRegisterAcount = () => {
     if (totalregister === 1) return `${totalregister} record found.`;
@@ -193,7 +198,7 @@ export default function CrossSearch({ ative, dataSearch }) {
           />
         </section>
       );
-    } else if (dataResponse.length === 0 && noDataFound === false) {
+    } else if (dataResponse.length === 0 && noDataFound === false && !noDataFound) {
       return (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />

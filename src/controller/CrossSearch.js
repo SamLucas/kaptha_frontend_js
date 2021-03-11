@@ -6,6 +6,8 @@ function CrossSearch() {
   function sortedByPolifenol(polifenol, includeGene = false) {
     let response = [];
 
+    console.log('>>>>> teste', polifenol)
+
     CrossPolifenol.forEach((ele) => {
       const { polifenol: polifenolMap, cancer, quant } = ele;
       if (polifenolMap === polifenol) {
@@ -53,7 +55,7 @@ function CrossSearch() {
 
   function sortedByPolifenolGene(polifenol) {
     let response = [];
-    console.log(polifenol)
+
     CrossGene.forEach((ele) => {
       const { polifenol: polifenolMap, gene, quant } = ele;
       if (polifenolMap.toLocaleLowerCase() === polifenol.toLocaleLowerCase()) {

@@ -113,7 +113,7 @@ export default function GeneSearch({ ative }) {
           />
         </section>
       );
-    } else if (dataResponse.length === 0 && dataSearch === "") {
+    } else if (dataResponse.length === 0 && dataSearch === "" && !noDataFound) {
       return (
         <section className="containerInformationSearch">
           <img className="img" src={Searching} alt="" />
